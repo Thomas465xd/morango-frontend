@@ -19,7 +19,9 @@
 }
 
 @utility button {
-    @apply rounded-md bg-amber-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-amber-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 transition-colors duration-200
+    @apply bg-stone-800 border-orange-50 border-1 text-orange-50 px-4 py-2 rounded-md 
+        disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-stone-800 hover:bg-stone-950 
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 transition-colors duration-200
 }
 
 @utility heading {
@@ -71,12 +73,12 @@
 }
 
 @utility highlight {
-    @apply font-semibold text-amber-500 dark:text-amber-400 drop-shadow-sm;
+    @apply font-semibold text-orange-400 dark:text-orange-200 drop-shadow-sm;
 }
 
 @utility link {
-    @apply text-amber-600 dark:text-amber-400 
-    hover:text-amber-700 dark:hover:text-amber-300
+    @apply text-orange-200 dark:text-orange-200 
+    hover:text-orange-300 dark:hover:text-orange-300
     underline-offset-2 hover:underline
     transition-colors duration-200 text-sm;
 }
@@ -86,9 +88,7 @@
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 
-    /* 👇 optional fallback */
-    --font-sans: 'Poppins', sans-serif;
-    --font-mono: var(--font-geist-mono);
+    --font-sans: var(--font-nunito);
 }
 .dark {
 	--background: #1d1d1d;
@@ -105,5 +105,5 @@ body {
 	color: var(--foreground);
 
     /* 👇 use the custom font var */
-	font-family: var(--font-sans), sans-serif;
+	font-family: var(--font-nunito), sans-serif;
 }

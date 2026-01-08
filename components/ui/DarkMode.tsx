@@ -16,12 +16,12 @@ export default function ThemeToggle() {
 
 	return (
 		<div className="flex items-center justify-center">
-			<div className="bg-gray-200 dark:bg-stone-700 rounded-lg p-1 flex gap-1">
+			<div className="bg-stone-700 rounded-lg p-1 flex gap-1">
 				<button
 					onClick={() => setTheme("light")}
 					className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 ${
 						theme === "light"
-							? "bg-white text-yellow-500 shadow-md"
+							? "bg-stone-800 text-yellow-500 shadow-md"
 							: "text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600"
 					}`}
 					aria-label="Light mode"
@@ -34,7 +34,7 @@ export default function ThemeToggle() {
 					className={`flex items-center justify-center p-2 rounded-md transition-all duration-200 ${
 						theme === "dark"
 							? "bg-stone-800 text-amber-400 shadow-md"
-							: "text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600"
+							: "text-gray-500 dark:text-gray-400 hover:bg-stone-800 dark:hover:bg-gray-600"
 					}`}
 					aria-label="Dark mode"
 				>

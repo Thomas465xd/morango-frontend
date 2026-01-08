@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/auth/RegisterForm";
+import LoginForm from "@/components/auth/LoginForm";
 import Logo from "@/components/ui/Logo";
 import { House } from "lucide-react";
 import Link from "next/link";
@@ -6,36 +6,36 @@ import Link from "next/link";
 export default function page() {
     return (
         <section>
-            <Logo />
+            <Logo center />
 
             <div className="flex justify-center mb-8">
                 <Link 
                     className="link flex items-center gap-2" 
-                    href="/"
+                    href="/home"
                 >
                     <House size={16} />
-                    Return to {' '}
-                    <span className='font-semibold'>Home Page</span>
+                    Volver al {' '}
+                    <span className='font-semibold'>Inicio</span>
                 </Link>
             </div>
 
-            <RegisterForm />
+            <LoginForm />
 
             <div className="flex flex-col items-center gap-5 mt-5 mb-5">
                 <Link 
                     className="link" 
-                    href="/auth/sign-in"
+                    href="/auth/register"
                 >
-                    Already have an account? {' '}
-                    <span className='font-semibold'>Sign in here</span>
+                    ¿Aún no tienes cuenta? {' '}
+                    <span className='font-semibold'>Registrate aquí</span>
                 </Link>
 
                 <Link 
                     className="link" 
                     href="/auth/forgot"
                 >
-                    Forgot your password? {' '}
-                    <span className='font-semibold'>Reset </span>
+                    ¿Olvidaste tu contraseña? {' '}
+                    <span className='font-semibold'>Reestablecer</span>
                 </Link>
             </div>
         </section>

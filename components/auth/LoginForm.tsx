@@ -25,7 +25,7 @@ export default function LoginForm() {
         },
         onSuccess: (data) => {
             Swal.fire({
-                title: "Successfully logged in 🍾",
+                title: "Inicio de sesión exitoso 🍾",
                 text: data.message, 
                 icon: "success",
                 theme: `${localStorage.getItem("theme") as SweetAlertTheme}`
@@ -48,12 +48,12 @@ export default function LoginForm() {
             onSubmit={handleSubmit(handleLogin)}
         >
             <h1 className="text-4xl font-bold mb-2">
-                Sign In
+                Iniciar Sesión
             </h1>
 
             <p className="paragraph">
-                Sign in to your account in {" "}
-                Ticket {" "} <span className='highlight'>X</span>
+                Ingresa a tu cuenta de {" "}
+                <span className='highlight'>Morango Joyas</span>
             </p>
 
             <div className="border max-w-68 border-amber-400" />
@@ -61,18 +61,18 @@ export default function LoginForm() {
             <div className="space-y-8 my-4">
                 <div className="">
                     <label htmlFor="">
-                        Email Adress
+                        Correo Electrónico
                     </label>
                     <input 
                         className="input" 
                         type="text" 
                         id="email"
-                        placeholder="Enter your Registered Email Adress"
+                        placeholder="Entra el email que registraste"
                         {...register("email", { 
-                            required: "Email cannot be empty",
+                            required: "El Correo no puede ir vacío",
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: "Invalid email address"
+                                message: "Correo inválido"
                             }
                         })}
                     />
@@ -81,15 +81,15 @@ export default function LoginForm() {
 
                 <div className="">
                     <label htmlFor="">
-                        Password
+                        Contraseña
                     </label>
                     <input 
                         className="input" 
-                        id="email"
+                        id="password"
                         type="password" 
-                        placeholder="Enter your registered Password"
+                        placeholder="Ingresa la contraseña de tu cuenta"
                         {...register("password", {
-                            required: "Password cannot be empty",
+                            required: "La contraseña no puede ir vacía",
                         })}
                     />
                     {errors.password && <ErrorMessage variant="inline">{errors.password.message}</ErrorMessage>}
@@ -97,10 +97,10 @@ export default function LoginForm() {
             </div>
 
             <button
-                className="bg-amber-400 text-white px-4 py-2 rounded-md"
+                className="button"
                 type="submit"
             >
-                Sign In
+                Iniciar sesión
             </button>
         </form>
     )

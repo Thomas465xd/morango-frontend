@@ -46,13 +46,13 @@ export default function BackToTopButton({
 			onClick={scrollToTop}
 			className={`
                     fixed bottom-6 left-6 z-50 
-                    bg-amber-600 hover:bg-amber-700 
-                    dark:bg-amber-500 dark:hover:bg-amber-600
+                    bg-orange-200 hover:bg-orange-300 
+                    dark:bg-orange-200 dark:hover:bg-orange-300
                     text-white p-3 rounded-full 
                     shadow-lg hover:shadow-xl
                     transition-all duration-300 ease-out
                     transform hover:scale-110
-                    focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2
+                    focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2
                     dark:focus:ring-offset-gray-800
                     ${
                         isVisible

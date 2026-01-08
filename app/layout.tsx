@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Poppins } from "next/font/google";
+import { Nunito } from "next/font/google";
 import ReactQueryProvider from "@/components/providers/QueryClientProvider";
 import { Theme } from "@/components/providers/ThemeProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
@@ -8,10 +8,10 @@ import BackToTopButton from "@/components/ui/BackToTop";
 import Footer from "@/components/ui/Footer";
 
 // Font optimization
-const poppins = Poppins({
+const nunito = Nunito({
 	weight: ["400", "500", "600", "700"],
 	subsets: ["latin"],
-	variable: "--font-poppins",
+	variable: "--font-nunito",
 	display: "swap", // Ensures text remains visible during font loading
 });
 
@@ -29,10 +29,10 @@ export const viewport: Viewport = {
 
 // SEO Configuration
 const siteConfig = {
-	name: "TicketX",
-	title: "TicketX",
-	description: "Find the tickets for your favorite artists in TicketX.",
-	url: "https://www.tickets.dev", // Replace with your actual domain
+	name: "Morango",
+	title: "Morango Joyas",
+	description: "Encuentra las mejores joyas y accesorios.",
+	url: "https://www.morangojoyas.cl",
 	siteName: "TicketX",
 	locale: "es_CL",
 	type: "website",
@@ -52,10 +52,36 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="en" suppressHydrationWarning className={nunito.variable}>
+            <head>
+                {/* DNS Prefetch & Preconnect */}
+                <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
+                <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+				<link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+
+				{/* Favicons */}
+                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+                <link rel="icon" type="image/ico" href="/favicon.ico" />
+                <link rel="manifest" href="/manifest.json" />
+                <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000" />
+                <meta name="msapplication-TileColor" content="#ffffff" />
+
+                {/* Preload Critical Resources */}
+                <link rel="preload" as="image" href="/logo.svg" type="image/svg+xml"/>
+
+                {/* Security Headers */}
+                <meta name="referrer" content="origin-when-cross-origin" />
+
+                {/* Additional SEO Meta Tags */}
+                <meta name="geo.region" content="CL-RM" />
+                <meta name="geo.placename" content="Santiago, Chile" />
+                <meta name="geo.position" content="-33.4489;-70.6693" />
+                <meta name="ICBM" content="-33.4489, -70.6693" />
+            </head>
 			<body
-                suppressHydrationWarning
-				className="font-sans antialiased flex min-h-screen flex-col"
+				suppressHydrationWarning
+				className="font-sans antialiased tracking-wide flex min-h-screen flex-col"
 			>
                 <ReactQueryProvider>
                     <Theme>

@@ -20,7 +20,7 @@ export default function RegisterForm() {
         defaultValues: initialValues
     });
 
-    const router = useRouter();
+    //const router = useRouter();
 
     const { mutate, isPending } = useMutation({
         mutationFn: createAccount, 
@@ -29,13 +29,12 @@ export default function RegisterForm() {
         },
         onSuccess: () => {
             Swal.fire({
-                title: "Account registered Successfully 🎉",
-                text: "Now you can login into your account using your entered credentials",
-                icon: "success",
+                title: "Hemos enviado un email de verificación 📥🧑‍💼",
+                text: "Confirma tu cuenta para completar tu registro en Morango Joyas",
+                icon: "info",
                 theme: `${localStorage.getItem("theme") as SweetAlertTheme}`
             })
             reset();
-            router.push("/");
         }
     })
 
@@ -57,27 +56,27 @@ export default function RegisterForm() {
             }}
         >
             <h1 className="text-4xl font-bold mb-2">
-                Sign Up
+                Crear cuenta
             </h1>
 
             <p className="paragraph">
-                Register your account in {" "}
-                Ticket {" "} <span className='highlight'>X</span>
+                Registrate en {" "}
+                <span className='highlight'>Morango Joyas</span>
             </p>
 
-            <div className="border max-w-68 border-amber-400" />
+            <div className="border max-w-68 border-orange-300" />
 
             <div className="space-y-8 my-4">
                 <div className="">
                     <label htmlFor="name">
-                        Name 
+                        Nombre
                     </label>
                     <input 
                         className="input" 
                         type="text" 
-                        placeholder="Enter your Name"
+                        placeholder="Ingresa tu nombre"
                         id="name"
-                        {...register("name", { required: "Name cannot be empty" })}
+                        {...register("name", { required: "El nombre no puede ir vacío" })}
                         onChange={(e) => {
                             register("name").onChange(e);
                             // Clear server error when user starts typing
@@ -91,18 +90,18 @@ export default function RegisterForm() {
 
                 <div className="">
                     <label htmlFor="email">
-                        Email Address
+                        Correo Electrónico
                     </label>
                     <input 
                         className="input" 
                         type="email" 
-                        placeholder="Enter your Email Address"
+                        placeholder="Ingresa tu email"
                         id="email"
                         {...register("email", { 
-                            required: "Email cannot be empty",
+                            required: "El email no puede ir vacío",
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: "Invalid email address"
+                                message: "Email inválido"
                             }
                         })}
                         onChange={(e) => {
@@ -126,10 +125,10 @@ export default function RegisterForm() {
                         placeholder="Create a secure Password"
                         id="password"
                         {...register("password", {
-                            required: "Password cannot be empty",
+                            required: "La contraseña no puede ir vacía",
                             minLength: {
                                 value: 7,
-                                message: 'Password must be larger than 7 characters'
+                                message: 'La contraseña debe tener al menos 7 caracteres'
                             }
                         })}
                         onChange={(e) => {
@@ -145,16 +144,16 @@ export default function RegisterForm() {
 
                 <div className="">
                     <label htmlFor="confirmPassword">
-                        Confirm Password
+                        Confirmar contraseña
                     </label>
                     <input 
                         className="input" 
                         type="password" 
-                        placeholder="Rewrite your entered Password"
+                        placeholder="Reescribe la contraseña"
                         id="confirmPassword"
                         {...register("confirmPassword", {
-                            required: "Repeat password field cannot be empty",
-                            validate: value => value === password || "Passwords don't match"
+                            required: "Confirmar la constraseña es obligatorio",
+                            validate: value => value === password || "Las contraseñas no coinciden"
                         })}
                         onChange={(e) => {
                             register("confirmPassword").onChange(e);
@@ -169,9 +168,9 @@ export default function RegisterForm() {
             </div>
 
             <input
-                className="bg-amber-400 text-white px-4 py-2 rounded-md disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-amber-400 hover:bg-amber-500 transition-colors duration-200"
+                className="button"
                 type="submit"
-                value={isPending ? "Creating account..." : "Sign Up"}
+                value={isPending ? "Creando cuenta..." : "Registrarse"}
                 disabled={isPending}
             />
         </form>
