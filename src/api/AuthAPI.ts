@@ -1,137 +1,202 @@
 import { isAxiosError } from "axios";
-import { getUserSchema, LoginUserForm, RegisterUserForm } from "../types";
+import { LoginUserForm, RegisterUserForm, ResetPasswordForm } from "../types";
 import api from "@/lib/axios";
-
-interface ValidationError {
-	message: string;
-	field: string;
-}
-
-interface ApiErrorResponse {
-	errors?: ValidationError[];
-	message?: string;
-	error?: string;
-}
 
 //? 🛠️ Register new user account
 export async function createAccount(formData: RegisterUserForm) {
 	try {
-		const url = "/api/auth/register";
+		const url = "/auth/register";
 		const response = await api.post(url, formData);
+
 		return response.data;
 	} catch (error) {
-		console.error("❌ Error en la solicitud:", error);
+        console.error("❌ Error en la solicitud:", error);
 
-		if (isAxiosError(error)) {
-			const responseData: ApiErrorResponse = error.response?.data;
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
 
-			if (responseData?.errors && Array.isArray(responseData.errors)) {
-				const message =
-					responseData.errors[0]?.message || "Validation error";
-				throw new Error(message);
-			}
-
-			const message =
-				responseData?.message ||
-				responseData?.error ||
-				error.message ||
-				"Ocurrió un error en la API";
-
-			throw new Error(message);
-		} else {
-			console.error("⚠️ Error desconocido:", error);
-			throw new Error(
-				"Error inesperado. Intenta nuevamente. Si el error persiste, contacta al administrador."
-			);
-		}
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
 	}
 }
 
 //? 📋 Login user
 export async function login(formData: LoginUserForm) {
 	try {
-		const url = "/api/auth/login";
+		const url = "/auth/login";
 		const response = await api.post(url, formData);
 		return response.data;
 	} catch (error) {
-		console.error("❌ Error en la solicitud:", error);
+        console.error("❌ Error en la solicitud:", error);
 
-		if (isAxiosError(error)) {
-			const responseData: ApiErrorResponse = error.response?.data;
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
 
-			if (responseData?.errors && Array.isArray(responseData.errors)) {
-				const message =
-					responseData.errors[0]?.message || "Validation error";
-				throw new Error(message);
-			}
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
 
-			const message =
-				responseData?.message ||
-				responseData?.error ||
-				error.message ||
-				"Ocurrió un error en la API";
+//? 📥 Resend email verification code 
+export async function resendCode(formData: { email: string }) {
+	try {
+		const url = "/auth/resend-verification";
+		const response = await api.post(url, formData);
 
-			throw new Error(message);
-		} else {
-			console.error("⚠️ Error desconocido:", error);
-			throw new Error(
-				"Error inesperado. Intenta nuevamente. Si el error persiste, contacta al administrador."
-			);
-		}
+		return response.data;
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 📥 Resend email verification code 
+export async function confirmToken(token: string) {
+	try {
+		const url = `/auth/confirm/${token}`;
+		const response = await api.post(url);
+
+		return response.data;
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 📥 Send forgot password email
+export async function forgotPasswordEmail(formData: { email: string }) {
+	try {
+		const url = `/auth/forgot-password`;
+		const response = await api.post(url, formData);
+
+		return response.data;
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 🔐 Reset password with token
+export async function resetPassword({ token, formData } : { token: string, formData: ResetPasswordForm }) {
+	try {
+		const url = `/auth/reset-password/${token}`;
+		const response = await api.post(url, formData );
+
+		return response.data;
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
 	}
 }
 
 //? ♟️ Get current authenticated user
 export async function getUser() {
 	try {
-		const url = "/api/auth/user";
-		//console.log(url)
-		const { data } = await api.get(url);
-		//console.log(data)
+		const url = "/auth/user";
+		const response = await api.get(url);
 
-		const response = getUserSchema.safeParse(data);
-
-		if (!response.success) {
-			// console.error("❌ Error de validación:", response.error.format());
-			// throw new Error("El formato de los datos del usuario no es válido.");
-			return null;
-		}
-
-		return response.data.currentUser;
+		return response.data;
 	} catch (error) {
-		console.error("❌ Error en la solicitud:", error);
+        console.error("❌ Error en la solicitud:", error);
 
-		if (isAxiosError(error)) {
-			console.error("🔍 Error de Axios detectado:");
-			console.error("➡️ Código de estado:", error.response?.status);
-			console.error("➡️ Respuesta completa:", error.response?.data);
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
 
-			const responseData: ApiErrorResponse = error.response?.data;
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
 
-			// If API returns structured validation errors
-			if (responseData?.errors && Array.isArray(responseData.errors)) {
-				// Throw the structured errors so they can be handled in the component
-				throw {
-					type: "validation",
-					errors: responseData.errors,
-					statusCode: error.response?.status,
-				};
-			}
+//? ⛓️ Logout 
+export async function logout() {
+	try {
+		const url = "/auth/logout";
+		const response = await api.post(url);
 
-			// Generic error
-			const errorMessage =
-				responseData?.message ||
-				responseData?.error ||
-				error.message ||
-				"Ocurrió un error en la API";
+		return response.data;
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
 
-			console.error("➡️ Mensaje de error:", errorMessage);
-			throw new Error(errorMessage);
-		} else {
-			console.error("⚠️ Error desconocido:", error);
-			throw new Error(
-				"Error inesperado. Intenta nuevamente. Si el error persiste, contacta al administrador."
-			);
-		}
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
 	}
 }
