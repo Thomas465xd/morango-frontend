@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
 
-export const useTimer = (expiresAt: string) => {
+export const useTimer = (expiresAt?: number) => {
     const [timeRemaining, setTimeRemaining] = useState<string>("");
+    const [isExpired, setIsExpired] = useState(true);
 
     useEffect(() => {
-        if (!expiresAt) return;
+        if (!expiresAt) {
+            setIsExpired(true);
+            setTimeRemaining("");
+            return;
+        }
 
         const updateTimer = () => {
-            const now = new Date();
-            const expiry = new Date(expiresAt);
-
-            const diffMs = expiry.getTime() - now.getTime();
+            const now = Date.now();
+            const diffMs = expiresAt - now;
 
             // If timer gets to 0 or below, then set timeRemaining to Expired and return. 
             if (diffMs <= 0) {
                 setTimeRemaining("Expired");
+                setIsExpired(true);
                 return;
             }
 
-            const diffMins = Math.floor(diffMs / 60000);
-            const hours = Math.floor(diffMins / 60);
-            const minutes = diffMins % 60;
+            setIsExpired(false);
+
+            const minutes = Math.floor(diffMs / 60000);
             const seconds = Math.floor((diffMs % 60000) / 1000);
 
-            if (hours > 0) {
-                setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`);
-            } else {
-                setTimeRemaining(`${minutes}m ${seconds}s`);
-            }
+            setTimeRemaining(`${minutes}m ${seconds}s`);
         };
 
         // Because update timer has not been called yet, now we are calling it
@@ -42,5 +42,5 @@ export const useTimer = (expiresAt: string) => {
         return () => clearInterval(interval);
     }, [expiresAt]);
 
-    return timeRemaining;
+    return { timeRemaining, isExpired };
 };
