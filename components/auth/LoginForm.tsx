@@ -5,8 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
 import ErrorMessage from "../ui/ErrorMessage";
+import Swal, { SweetAlertTheme } from "sweetalert2";
 
 export default function LoginForm() {
     const initialValues : LoginUserForm = {
@@ -24,14 +24,27 @@ export default function LoginForm() {
             toast.error(error.message)
         },
         onSuccess: (data) => {
-            Swal.fire({
-                title: "Inicio de sesión exitoso 🍾",
-                text: data.message, 
-                icon: "success",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`
-            }).then(() => {
-                router.push("/");
-            })
+            if(data.admin) {
+                Swal.fire({
+                    title: "🎉 Sesión Iniciada como Administrador 🎉",
+                    text: data.message, 
+                    icon: "success",
+                    theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                }).then(() => {
+                    router.push("/admin");
+                })
+            } else {
+                Swal.fire({
+                    title: "🎉 Sesion Iniciada Correctamente 🎉",
+                    text: data.message, 
+                    timer: 800,
+                    showConfirmButton: false,
+                    icon: "success",
+                    theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                }).then(() => {
+                    router.push("/home");
+                })
+            }
 
             reset()
         }
@@ -44,7 +57,7 @@ export default function LoginForm() {
     
     return (
         <form 
-            className="p-12 bg-white dark:bg-stone-700 rounded-md"
+            className="form"
             onSubmit={handleSubmit(handleLogin)}
         >
             <h1 className="text-4xl font-bold mb-2">
@@ -56,7 +69,7 @@ export default function LoginForm() {
                 <span className='highlight'>Morango Joyas</span>
             </p>
 
-            <div className="border max-w-68 border-amber-400" />
+            <div className="border max-w-68 border-orange-300" />
 
             <div className="space-y-8 my-4">
                 <div className="">

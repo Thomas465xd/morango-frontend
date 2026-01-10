@@ -2,15 +2,16 @@
 import { createAccount } from "@/src/api/AuthAPI";
 import { RegisterUserForm } from "@/src/types";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify";
 import Swal, { SweetAlertTheme } from "sweetalert2";
 import ErrorMessage from "../ui/ErrorMessage";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
     const initialValues : RegisterUserForm = {
         name: "", 
+        surname: "", 
         email: "",
         password: "", 
         confirmPassword: ""
@@ -19,20 +20,24 @@ export default function RegisterForm() {
     const { register, handleSubmit, reset, watch, formState: { errors }, clearErrors } = useForm({
         defaultValues: initialValues
     });
+    
+    const router = useRouter();
 
-    //const router = useRouter();
+    const password = watch('password');
 
     const { mutate, isPending } = useMutation({
         mutationFn: createAccount, 
         onError: (error) => {
             toast.error(error.message)
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             Swal.fire({
                 title: "Hemos enviado un email de verificación 📥🧑‍💼",
                 text: "Confirma tu cuenta para completar tu registro en Morango Joyas",
                 icon: "info",
                 theme: `${localStorage.getItem("theme") as SweetAlertTheme}`
+            }).then(() => {
+                router.push(`/auth/pending?email=${data.user.email}`);
             })
             reset();
         }
@@ -43,11 +48,10 @@ export default function RegisterForm() {
         mutate(formData);
     }
 
-    const password = watch('password');
 
     return (
         <form 
-            className="p-12 bg-white dark:bg-stone-700 rounded-md"
+            className="form"
             onSubmit={(e) => {
                 // Clear server errors before validation
                 clearErrors();
@@ -67,26 +71,53 @@ export default function RegisterForm() {
             <div className="border max-w-68 border-orange-300" />
 
             <div className="space-y-8 my-4">
-                <div className="">
-                    <label htmlFor="name">
-                        Nombre
-                    </label>
-                    <input 
-                        className="input" 
-                        type="text" 
-                        placeholder="Ingresa tu nombre"
-                        id="name"
-                        {...register("name", { required: "El nombre no puede ir vacío" })}
-                        onChange={(e) => {
-                            register("name").onChange(e);
-                            // Clear server error when user starts typing
-                            if (errors.name?.type === 'server') {
-                                clearErrors('name');
-                            }
-                        }}
-                    />
-                    {errors.name && <ErrorMessage variant="inline">{errors.name.message}</ErrorMessage>}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="">
+                        <div className="space-y-2">
+                            <label htmlFor="name">
+                                Nombre
+                            </label>
+                            <input 
+                                className="input" 
+                                type="text" 
+                                placeholder="Ingresa tu nombre"
+                                id="name"
+                                {...register("name", { required: "El nombre no puede ir vacío" })}
+                                onChange={(e) => {
+                                    register("name").onChange(e);
+                                    // Clear server error when user starts typing
+                                    if (errors.name?.type === 'server') {
+                                        clearErrors('name');
+                                    }
+                                }}
+                            />
+                        </div>
+                        {errors.name && <ErrorMessage variant="inline">{errors.name.message}</ErrorMessage>}
+                    </div>
+                    <div className="">
+                        <div className="space-y-2">
+                            <label htmlFor="name">
+                                Apellido
+                            </label>
+                            <input 
+                                className="input" 
+                                type="text" 
+                                placeholder="Ingresa tu apellido"
+                                id="surname"
+                                {...register("surname", { required: "El apellido no puede ir vacío" })}
+                                onChange={(e) => {
+                                    register("surname").onChange(e);
+                                    // Clear server error when user starts typing
+                                    if (errors.surname?.type === 'server') {
+                                        clearErrors('surname');
+                                    }
+                                }}
+                            />
+                        </div>
+                        {errors.name && <ErrorMessage variant="inline">{errors.name.message}</ErrorMessage>}
+                    </div>
                 </div>
+
 
                 <div className="">
                     <label htmlFor="email">
