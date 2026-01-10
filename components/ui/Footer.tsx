@@ -3,7 +3,83 @@ import Image from "next/image";
 import Link from "next/link";
 import LogoImage from "@/public/logo-no-bg.png";
 
-export default function Footer() {
+type FooterProps = {
+    auth?: boolean 
+}
+
+export default function Footer({ auth = false } : FooterProps) {
+    if(auth) {
+        return (
+            <footer className="bg-stone-900 border-t border-stone-700">
+                <div className="max-w-7xl mx-auto px-6 py-6">
+                    <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                        <p className="text-sm text-gray-400 text-center lg:text-left">
+                            Todos los derechos reservados Morango Joyas &copy;{" "}
+                            <span className="font-bold">{new Date().getFullYear()}</span>
+                        </p>
+
+                        <div className="flex justify-center lg:justify-start space-x-4">
+                            <Link
+                                href="https://www.facebook.com/morangojoyas.cl"
+                                className="text-gray-300 dark:text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Facebook de JUP Propiedades"
+                            >
+                                <Facebook size={18} />
+                            </Link>
+                            <Link
+                                href="https://www.instagram.com/morangojoyas.cl"
+                                className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram de JUP Propiedades"
+                            >
+                                <Instagram size={18} />
+                            </Link>
+                            <Link
+                                href="#"
+                                className="text-gray-300 dark:text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="LinkedIn de Morango Joyas"
+                            >
+                                <Linkedin size={18} />
+                            </Link>
+                            <Link
+                                href="mailto:javiera@morangojoyas.cl"
+                                className="text-gray-300 dark:text-gray-400 hover:text-green-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                aria-label="Enviar correo a soporte"
+                            >
+                                <Mail size={18} />
+                            </Link>
+                        </div>
+
+                        <div className="text-center lg:text-right">
+                            <p className="text-sm text-gray-400 flex items-center justify-center lg:justify-end gap-1">
+                                <MapPin className="w-4 h-4" />
+                                San Carlos de Apoquindo #2991, Las Condes
+                            </p>
+
+                            <p className="text-xs text-gray-500 mt-1">
+                                Developed by{" "}
+                                <Link
+                                    href="https://thomas-dev-portfolio.vercel.app/?lang=es"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-300 hover:text-white transition font-medium"
+                                >
+                                    Iñigo Del Campo
+                                </Link>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </footer>
+        )
+    }
+
 	return (
 		<footer className="bg-gradient-to-tr from-zinc-800 to-zinc-900 dark:from-zinc-900 dark:to-zinc-800 text-white py-12 transition-colors duration-200">
 			<div className="max-w-screen-2xl mx-auto px-4 md:px-8">
@@ -131,21 +207,21 @@ export default function Footer() {
 						<div className="space-y-2">
 							<p className="flex items-center justify-center lg:justify-start text-sm">
 								<Mail className="w-4 h-4 mr-2" />
-								<a
+								<Link
 									href="mailto:contact@jup.cl"
 									className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white transition duration-200"
 								>
 									javiera@morangojoyas.cl
-								</a>
+								</Link>
 							</p>
 							<p className="flex items-center justify-center lg:justify-start text-sm">
 								<Phone className="w-4 h-4 mr-2" />
-								<a
+								<Link
 									href="tel:+56982192688"
 									className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white transition duration-200"
 								>
 									+56 9 8219 2688
-								</a>
+								</Link>
 							</p>
 						</div>
 
@@ -155,7 +231,7 @@ export default function Footer() {
 								Síguenos
 							</h4>
 							<div className="flex justify-center lg:justify-start space-x-4">
-								<a
+								<Link
 									href="https://www.facebook.com/morangojoyas.cl"
 									className="text-gray-300 dark:text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									target="_blank"
@@ -163,8 +239,8 @@ export default function Footer() {
 									aria-label="Facebook de JUP Propiedades"
 								>
 									<Facebook size={18} />
-								</a>
-								<a
+								</Link>
+								<Link
 									href="https://www.instagram.com/morangojoyas.cl"
 									className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									target="_blank"
@@ -172,8 +248,8 @@ export default function Footer() {
 									aria-label="Instagram de JUP Propiedades"
 								>
 									<Instagram size={18} />
-								</a>
-								<a
+								</Link>
+								<Link
 									href="#"
 									className="text-gray-300 dark:text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									target="_blank"
@@ -181,14 +257,14 @@ export default function Footer() {
 									aria-label="LinkedIn de Morango Joyas"
 								>
 									<Linkedin size={18} />
-								</a>
-								<a
+								</Link>
+								<Link
 									href="mailto:javiera@morangojoyas.cl"
 									className="text-gray-300 dark:text-gray-400 hover:text-green-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									aria-label="Enviar correo a soporte"
 								>
 									<Mail size={18} />
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -210,14 +286,14 @@ export default function Footer() {
 							</p>
 							<p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
 								Developed by:{" "}
-								<a
+								<Link
 									href="https://thomas-dev-portfolio.vercel.app/?lang=es"
 									target="_blank"
 									rel="noopener noreferrer"
 									className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white transition duration-200 font-medium"
 								>
 									Iñigo Del Campo
-								</a>
+								</Link>
 							</p>
 						</div>
 					</div>

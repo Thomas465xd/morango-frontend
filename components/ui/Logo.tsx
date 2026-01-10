@@ -11,7 +11,7 @@ export default function Logo({ mini, center } : LogoProps) {
     return (
         <div className={`flex-shrink-0 flex ${center && "justify-center"} items-center`}>
             <Link
-                href="/"
+                href="/home"
                 className="flex items-center space-x-2"
             >
                 <Image
@@ -24,7 +24,7 @@ export default function Logo({ mini, center } : LogoProps) {
                     loading="eager"
                     className="object-contain h-auto w-auto"
                     placeholder="empty"
-                    sizes="(max-width: 640px) 100px, (max-width: 1024px) 120px, 160px"
+                    sizes={`${mini ? "" : "(max-width: 640px) 100px, (max-width: 1024px) 120px, 160px"}`}
                 />
             </Link>
         </div>

@@ -1,3 +1,4 @@
+import Footer from "@/components/ui/Footer";
 import type { ReactNode } from "react";
 
 export default function AuthLayout({
@@ -15,8 +16,12 @@ export default function AuthLayout({
 				<div className="absolute top-1/3 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl opacity-3"></div>
 
 				{/* Content container */}
-				<div className="relative z-10">{children}</div>
+				<div className="relative z-10">
+                    {children}
+                </div>
 			</main>
+
+            <Footer auth />
 		</>
 	);
 }

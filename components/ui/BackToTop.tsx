@@ -46,7 +46,7 @@ export default function BackToTopButton({
 			onClick={scrollToTop}
 			className={`
                     fixed bottom-6 left-6 z-50 
-                    bg-orange-200 hover:bg-orange-300 
+                    bg-orange-300 hover:bg-orange-400 
                     dark:bg-orange-200 dark:hover:bg-orange-300
                     text-white p-3 rounded-full 
                     shadow-lg hover:shadow-xl

@@ -5,7 +5,6 @@ import ReactQueryProvider from "@/components/providers/QueryClientProvider";
 import { Theme } from "@/components/providers/ThemeProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
 import BackToTopButton from "@/components/ui/BackToTop";
-import Footer from "@/components/ui/Footer";
 
 // Font optimization
 const nunito = Nunito({
@@ -87,7 +86,6 @@ export default function RootLayout({
                     <Theme>
                         <ToastProvider />
                             {children}
-                            <Footer />
                         <BackToTopButton />
                     </Theme>
                 </ReactQueryProvider>
