@@ -2,7 +2,7 @@
 
 import { logout } from "@/src/api/AuthAPI";
 import { User } from "@/src/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Boxes, ChevronDownIcon, LogOut, Settings2, ShoppingCart, TableConfigIcon, UserCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -43,12 +43,16 @@ export default function UserDropdown({ user } : UserDropdownProps) {
         };
     }, []);
 
+    const queryClient = useQueryClient(); 
+
     const { mutate, isPending } = useMutation({
         mutationFn: logout, 
         onError: (error) => {
             toast.error(error.message)
         }, 
         onSuccess: (data) => {
+            queryClient.removeQueries({ queryKey: ["user"], exact: true });
+
             Swal.fire({
                 title: "🎉 Sesión cerrada exitosamente 🎉",
                 text: data.message, 
@@ -57,7 +61,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
                 icon: "success",
                 theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
             }).then(() => {
-                router.push("/home");
+                router.replace("/home"); // replace avoids history issues
             })
         }
     })
@@ -147,7 +151,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
                         <ShoppingCart size={16} />
                         Carrito
                     </Link>
-                    {user.role && (
+                    {user.role === "admin" && (
                         <Link
                             href="/admin"
                             className="flex-align px-4 py-2 text-sm text-blue-500

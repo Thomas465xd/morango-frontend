@@ -30,12 +30,13 @@ export default function LoginForm() {
         onSuccess: () => {
             Swal.fire({
                 title: "🔐 Contraseña Actualizada",
-                text: "Tu contraseña fue actualizada correctamente.",
+                text: "Tu contraseña fue actualizada correctamente. 🎉🎉",
                 icon: "success",
-                confirmButtonText: "Iniciar Sesión",
+                timer: 800, 
+                showConfirmButton: false, 
                 theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
             }).then(() => {
-                router.push("/home/login");
+                router.push("/home");
             });
 
             reset();

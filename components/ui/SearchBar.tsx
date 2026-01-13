@@ -62,7 +62,10 @@ export default function SearchBar({
         <div className="">
             <form 
                 onSubmit={handleSubmit(handleSearchForm)} 
-                className="flex items-center gap-2 mt-6 md:min-w-xl bg-white dark:bg-stone-700/50 shadow-md rounded-lg p-2 w-full max-w-2xl mx-auto"
+                className={`
+                    flex items-center gap-2 
+                    bg-white dark:bg-zinc-700/50 shadow-md rounded-lg 
+                    w-full ${mini ? "" : "md:min-w-xl max-w-2xl mt-6"} mx-auto p-2`}
             >
                 <div className="relative flex-grow">
                     {inputType === "select" ? (
@@ -71,17 +74,19 @@ export default function SearchBar({
                                 <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                                     <selectedOption.icon 
                                         size={18} 
-                                        className={selectedOption.color || "text-stone-400"}
+                                        className={selectedOption.color || "text-zinc-400"}
                                     />
                                 </div>
                             )}
                             <select
-                                className={`p-3 w-full border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 transition bg-white ${
+                                className={`p-3 w-full border border-zinc-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-zinc-500 transition bg-white ${
                                     selectedOption?.icon ? "pl-10" : ""
                                 } ${
-                                    selectedOption?.color ? `${selectedOption.color}` : "text-stone-900"
+                                    selectedOption?.color ? `${selectedOption.color}` : "text-zinc-900"
                                 }`}
-                                {...register("search", { required: "Debes seleccionar una opción." })}
+                                {...register("search", {
+                                    required: "Debes seleccionar una opción."
+                                })}
                             >
                                 <option value="" disabled>
                                     {formText}
@@ -90,7 +95,7 @@ export default function SearchBar({
                                     <option 
                                         key={option.value} 
                                         value={option.value}
-                                        className="text-stone-900"
+                                        className="text-zinc-900"
                                     >
                                         {option.label}
                                     </option>
@@ -98,25 +103,52 @@ export default function SearchBar({
                             </select>
                         </div>
                     ) : (
-                        <input 
-                            type={inputType}
-                            placeholder={formText}
-                            className={`${mini ? "p-0.5 px-2" : "p-3"} w-full border border-stone-300 dark:border-stone-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 transition`}
-                            {...register("search", { required: "El campo de búsqueda es obligatorio." })}
-                        />
+                        mini ? (
+                            <>
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Search size={18} className="text-zinc-400" />
+                                </div>
+                                
+                                <input 
+                                    type={inputType}
+                                    placeholder={formText}
+                                    className={`block w-full pl-10 pr-3 py-2 border border-zinc-200 dark:border-zinc-600 rounded-md bg-zinc-50 dark:bg-zinc-700 text-sm text-zinc-800 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    {...register("search", {
+                                        required: "El campo de búsqueda es obligatorio.", 
+                                        minLength: {
+                                            value: 3,
+                                            message: "La búsqueda debe tener mas de 3 caracteres"
+                                        }
+                                    })}
+                                />
+                            </>
+                        ) : (
+                            <input 
+                                type={inputType}
+                                placeholder={formText}
+                                className={`w-full border border-zinc-300 dark:border-zinc-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:border-zinc-500 transition`}
+                                {...register("search", {
+                                    required: "El campo de búsqueda es obligatorio.", 
+                                    minLength: {
+                                        value: 3,
+                                        message: "La búsqueda debe tener mas de 3 caracteres"
+                                    }
+                                })}
+                            />
+                        )
                     )}
                 </div>
 
                 <button 
                     type="submit" 
-                    className={`min-w-40 sm:min-w-44 ${mini ? "p-0.5" : "p-3"} text-white bg-stone-600 hover:bg-stone-700 dark:bg-stone-800 transition-colors rounded-lg font-semibold shadow-md flex gap-2 items-center justify-center`}
+                    className={`py-2 min-w-40 sm:min-w-44 text-white bg-zinc-600 hover:bg-zinc-700 dark:bg-zinc-800 transition-colors rounded-lg font-semibold shadow-md flex gap-2 items-center justify-center`}
                 >
                     <Search size={18} />
-                    Search {searchText}
+                    Buscar {searchText}
                 </button>
             </form>
 
-            <div className="w-full max-w-2xl mx-auto mt-2">
+            <div className={`w-full ${mini ? "" : "max-w-2xl mx-auto"} mt-2`}>
                 {errors.search && (
                     <ErrorMessage variant="mini">{errors.search.message}</ErrorMessage>
                 )}

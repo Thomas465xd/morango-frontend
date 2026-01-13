@@ -39,8 +39,8 @@ export default function NavBar() {
     if(isLoading) return (
         <NavBarSkeleton />
     )
-
-	if(user) return (
+    
+    if(user) return (
         <>
 
             <header className="relative z-50">
@@ -71,4 +71,35 @@ export default function NavBar() {
             </header>
         </>
 	);
+
+    return (
+            <>
+                <header className="relative z-50">
+                    <nav aria-label="Top">
+                        <DesktopNav
+                            open={mobileMenuOpen}
+                            onToggleMobileMenu={toggleMobileMenu}
+                            navigation={navigation}
+                            user={user}
+                        />
+                    </nav>
+
+                    {/* Backdrop (click closes menu) */}
+                    {mobileMenuOpen && (
+                        <div
+                            className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                            onClick={toggleMobileMenu}
+                        />
+                    )}
+
+                    {/* Mobile menu */}
+                    <MobileNav
+                        open={mobileMenuOpen}
+                        onToggle={toggleMobileMenu}
+                        navigation={navigation}
+                        user={user}
+                    />
+                </header>
+            </>
+        );
 }

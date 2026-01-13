@@ -2,9 +2,13 @@
 
 import Link from "next/link";
 import { navigation } from "./NavBar";
-import { usePathname } from "next/navigation";
-import { Boxes, LogIn, LucideSettings2, PencilLine, ShoppingCart, TableConfigIcon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { Boxes, LogIn, LogOut, LucideSettings2, PencilLine, ShoppingCart, TableConfigIcon } from "lucide-react";
 import { User } from "@/src/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logout } from "@/src/api/AuthAPI";
+import { toast } from "react-toastify";
+import Swal, { SweetAlertTheme } from "sweetalert2";
 
 type MobileMenuProps = {
 	open: boolean;
@@ -21,7 +25,33 @@ export default function MobileNav({
     user
 } : MobileMenuProps) {
     const currentPath = usePathname(); 
+    const router = useRouter(); 
+    const queryClient = useQueryClient(); 
 
+    const { mutate, isPending } = useMutation({
+        mutationFn: logout, 
+        onError: (error) => {
+            toast.error(error.message)
+        }, 
+        onSuccess: (data) => {
+            queryClient.removeQueries({ queryKey: ["user"], exact: true });
+            
+            Swal.fire({
+                title: "🎉 Sesión cerrada exitosamente 🎉",
+                text: data.message, 
+                timer: 800,
+                showConfirmButton: false,
+                icon: "success",
+                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+            }).then(() => {
+                router.replace("/home"); // replace avoids history issues
+            })
+        }
+    })
+
+    const handleLogout = () => {
+        mutate(); 
+    }
 	return (
 		<div
 			className={`
@@ -81,9 +111,6 @@ export default function MobileNav({
                     </div>
                 ) : (
                     <div className="space-y-4 mt-auto">
-                        <h1 className="text-xl px-4">
-                            Hola, <span className="highlight">{user.name}</span>
-                        </h1>
                         <div className="px-4 py-3">
                             <p className="text-sm text-gray-400">
                                 Sesión iniciada como
@@ -122,7 +149,7 @@ export default function MobileNav({
                             <ShoppingCart size={16} />
                             Carrito
                         </Link>
-                        {user.role && (
+                        {user.role === "admin" && (
                             <Link
                                 href="/admin"
                                 className="flex-align px-4 py-2 text-sm text-blue-500
@@ -134,6 +161,21 @@ export default function MobileNav({
                                 Panel de Administración
                             </Link>
                         )}
+                        <div className="py-1" role="none">
+                            <form>
+                                <button
+                                    onClick={handleLogout}
+                                    disabled={isPending}
+                                    className="flex-align w-full px-4 py-2 text-left text-sm text-gray-300
+                                        hover:bg-white/5 hover:text-white
+                                        transition-colors duration-150"
+                                    role="menuitem"
+                                >
+                                    <LogOut size={16} />
+                                    Cerrar sesión
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 )}
 			</div>

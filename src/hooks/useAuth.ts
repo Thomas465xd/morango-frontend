@@ -4,10 +4,10 @@ import { User } from "../types";
 
 export const useAuth = () => {
     const query = useQuery({
-        queryKey: ["auth", "user"],
+        queryKey: ["user"],
         queryFn: getUser,
         retry: false,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: 0,
         refetchOnWindowFocus: false,
     });
 

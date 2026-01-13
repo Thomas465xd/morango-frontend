@@ -32,6 +32,7 @@ export async function login(formData: LoginUserForm) {
 	try {
 		const url = "/auth/login";
 		const response = await api.post(url, formData);
+        
 		return response.data;
 	} catch (error) {
         console.error("❌ Error en la solicitud:", error);

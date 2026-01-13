@@ -1,7 +1,7 @@
 "use client";
 import { login } from "@/src/api/AuthAPI";
 import { LoginUserForm } from "@/src/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify";
@@ -18,20 +18,25 @@ export default function LoginForm() {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm<LoginUserForm>({defaultValues: initialValues});
 
+    const queryClient = useQueryClient(); 
+
     const { mutate } = useMutation({
         mutationFn: login,
         onError: (error: Error) => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
+            queryClient.removeQueries({ queryKey: ["user"] });
             if(data.admin) {
                 Swal.fire({
                     title: "🎉 Sesión Iniciada como Administrador 🎉",
                     text: data.message, 
+                    timer: 800,
+                    showConfirmButton: false,
                     icon: "success",
                     theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
                 }).then(() => {
-                    router.push("/admin");
+                    router.push("/home");
                 })
             } else {
                 Swal.fire({

@@ -270,7 +270,7 @@ export default function DesktopNav({ open, onToggleMobileMenu, navigation, user 
                                             </Link>
                                         </div>
                                     ) : (
-                                        <div className="hidden lg:flex-align">
+                                        <div className="hidden lg:flex">
                                             <UserDropdown 
                                                 user={user}
                                             />
