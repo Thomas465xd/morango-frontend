@@ -42,7 +42,7 @@ export default async function AdminLayout({
 
 	return (
 		<div className="min-h-screen 
-            bg-gradient-to-br bg-white
+            bg-gradient-to-br bg-zinc-100/90
             dark:from-stone-900 dark:via-stone-800 dark:to-stone-950"
         >
 			<AdminSidebar />

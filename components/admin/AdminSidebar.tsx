@@ -91,7 +91,7 @@ export default function AdminSidebar() {
                                                         className={classNames(
                                                             currentPathname === item.href
                                                                 ? "bg-white/5 text-white"
-                                                                : "text-gray-400 hover:bg-white/5 hover:text-white",
+                                                                : "text-zinc-400 hover:bg-white/5 hover:text-white",
                                                             "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
                                                         )}
                                                     >
@@ -106,7 +106,7 @@ export default function AdminSidebar() {
                                         </ul>
                                     </li>
                                     <li>
-                                        <div className="text-xs/6 font-semibold text-gray-400">
+                                        <div className="text-xs/6 font-semibold text-zinc-400">
                                             Utilidades
                                         </div>
                                         <ul
@@ -119,12 +119,12 @@ export default function AdminSidebar() {
                                                         href={utility.href}
                                                         className={classNames(
                                                             currentPathname === utility.href
-                                                                ? "bg-gray-800 text-white"
-                                                                : "text-gray-400 hover:bg-white/5 hover:text-white",
+                                                                ? "bg-zinc-800 text-white"
+                                                                : "text-zinc-400 hover:bg-white/5 hover:text-white",
                                                             "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
                                                         )}
                                                     >
-                                                        <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:border-white/20 group-hover:text-white">
+                                                        <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-zinc-800 text-[0.625rem] font-medium text-zinc-400 group-hover:border-white/20 group-hover:text-white">
                                                             {utility.initial}
                                                         </span>
                                                         <span className="truncate">
@@ -163,7 +163,7 @@ export default function AdminSidebar() {
                                                 className={classNames(
                                                     currentPathname === item.href
                                                         ? "bg-white/5 text-white"
-                                                        : "text-gray-400 hover:bg-white/5 hover:text-white",
+                                                        : "text-zinc-400 hover:bg-white/5 hover:text-white",
                                                     "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
                                                 )}
                                             >
@@ -178,7 +178,7 @@ export default function AdminSidebar() {
                                 </ul>
                             </li>
                             <li>
-                                <div className="text-xs/6 font-semibold text-gray-400">
+                                <div className="text-xs/6 font-semibold text-zinc-400">
                                     Utilidades
                                 </div>
                                 <ul
@@ -189,14 +189,17 @@ export default function AdminSidebar() {
                                         <li key={utility.name}>
                                             <Link
                                                 href={utility.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                aria-label="Morango Joyas E-commerce"
                                                 className={classNames(
                                                     currentPathname === utility.href
-                                                        ? "bg-gray-800 text-white"
-                                                        : "text-gray-400 hover:bg-white/5 hover:text-white",
+                                                        ? "bg-zinc-800 text-white"
+                                                        : "text-zinc-400 hover:bg-white/5 hover:text-white",
                                                     "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
                                                 )}
                                             >
-                                                <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
+                                                <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-[0.625rem] font-medium text-zinc-400 group-hover:text-white">
                                                     {utility.initial}
                                                 </span>
                                                 <span className="truncate">
@@ -217,7 +220,7 @@ export default function AdminSidebar() {
                                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                         width={32}
                                         height={32}
-                                        className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
+                                        className="size-8 rounded-full bg-zinc-800 outline -outline-offset-1 outline-white/10"
                                     />
                                     <span className="sr-only">
                                         Your profile
@@ -231,11 +234,11 @@ export default function AdminSidebar() {
                 </div>
             </div>
 
-            <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-gray-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-0 dark:after:border-b dark:after:border-white/10 dark:after:bg-black/10">
+            <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-zinc-900 px-4 py-4 shadow-sm sm:px-6 lg:hidden dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-0 dark:after:border-b dark:after:border-white/10 dark:after:bg-black/10">
                 <button
                     type="button"
                     onClick={() => setSidebarOpen(true)}
-                    className="-m-2.5 p-2.5 text-gray-400 hover:text-white lg:hidden"
+                    className="-m-2.5 p-2.5 text-zinc-400 hover:text-white lg:hidden"
                 >
                     <span className="sr-only">Open sidebar</span>
                     <Menu aria-hidden="true" className="size-6" />
@@ -250,7 +253,7 @@ export default function AdminSidebar() {
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         width={32}
                         height={32}
-                        className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
+                        className="size-8 rounded-full bg-zinc-800 outline -outline-offset-1 outline-white/10"
                     />
                 </Link>
             </div>
