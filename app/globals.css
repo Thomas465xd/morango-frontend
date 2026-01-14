@@ -19,7 +19,7 @@
 }
 
 @utility button {
-    @apply bg-stone-800 border-orange-50 border-1 text-orange-50 px-4 py-2 rounded-md 
+    @apply bg-stone-800 dark:border-zinc-50 dark:hover:border-zinc-500 border-1 text-zinc-50 hover:text-zinc-300 px-4 py-2 rounded-md 
         disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-stone-800 hover:bg-stone-950 
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 transition-colors duration-200
 }
@@ -33,37 +33,75 @@
 }
 
 @utility button-zinc-gradient {
-    @apply bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-800 bg-[length:200%_200%] bg-[position:0%_50%] hover:bg-[position:100%_50%] transition-all duration-500 px-8 py-2 rounded-md flex items-center gap-2 text-white
+    @apply bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-800 bg-[length:200%_200%] bg-[position:0%_50%] 
+        hover:bg-[position:100%_50%] transition-all duration-500 
+        px-8 py-2 rounded-md 
+        flex items-center gap-2 
+        text-white
 }
 
-@utility button-blue-gradient {
-    @apply bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 bg-[length:200%_200%] bg-[position:0%_50%] hover:bg-[position:100%_50%] transition-all duration-500 px-8 py-2 rounded-md flex items-center gap-2 text-white
-}
-
-@utility button-amber-gradient {
-    @apply bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 bg-[length:200%_200%] bg-[position:0%_50%] hover:bg-[position:100%_50%] transition-all duration-500 px-8 py-2 rounded-md flex items-center gap-2 text-white
+@utility button-orange-gradient {
+    @apply bg-gradient-to-r from-orange-50 via-orange-100 to-orange-200 dark:from-stone-700 dark:via-stone-600 dark:to-stone-800 bg-[length:200%_200%] 
+        bg-[position:0%_50%] hover:bg-[position:100%_50%] transition-all duration-500 
+        px-12 py-4 rounded-md flex items-center gap-2 text-stone-900 dark:text-white disabled:opacity-50
 }
 
 @utility input {
     @apply w-full p-3 rounded-lg border border-gray-300 dark:border-stone-600 
-    bg-white dark:bg-stone-800 
-    text-gray-900 dark:text-stone-100 
-    placeholder-gray-500 dark:placeholder-stone-400
-    focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 
-    focus:border-transparent
-    shadow-sm dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]
-    transition-all duration-200;
+        bg-white dark:bg-stone-800 
+        text-gray-900 dark:text-stone-100 
+        placeholder-gray-500 dark:placeholder-stone-400
+        focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400 
+        focus:border-transparent
+        shadow-sm dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]
+        transition-all duration-200;
+}
+
+@utility input-admin {
+    @apply w-full px-4 py-3 mb-2 rounded-lg border border-stone-300 dark:border-stone-600 
+        bg-white dark:bg-stone-700 
+        text-stone-900 dark:text-white 
+        placeholder-stone-500 dark:placeholder-stone-400 
+        focus:border-orange-300 focus:ring-2 focus:ring-orange-200 dark:focus:ring-orange-100 
+        focus:outline-none
+        shadow-sm dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]
+        transition-all duration-200
+}
+
+@utility textarea {
+    @apply text-white
 }
 
 @utility card {
     @apply relative rounded-2xl p-8 border h-full 
-    bg-white dark:bg-stone-900/90 
-    border-zinc-200 dark:border-stone-800 
-    shadow-sm dark:shadow-[0_4px_15px_rgba(0,0,0,0.4)]
-    hover:shadow-lg dark:hover:shadow-[0_8px_25px_rgba(0,0,0,0.6)]
-    hover:border-zinc-300 dark:hover:border-stone-700
-    backdrop-blur-sm dark:backdrop-blur-md
-    transition-all duration-300;
+        bg-white dark:bg-stone-900/90 
+        border-zinc-200 dark:border-stone-800 
+        shadow-sm dark:shadow-[0_4px_15px_rgba(0,0,0,0.4)]
+        hover:shadow-lg dark:hover:shadow-[0_8px_25px_rgba(0,0,0,0.6)]
+        hover:border-zinc-300 dark:hover:border-stone-700
+        backdrop-blur-sm dark:backdrop-blur-md
+        transition-all duration-300;
+}
+
+@utility purple-toast-card {
+    @apply bg-gradient-to-br from-purple-50 to-purple-100 
+    dark:from-purple-900/20 dark:to-purple-800/20 
+    rounded-lg border border-purple-200 dark:border-purple-800 
+    p-4 
+}
+
+@utility orange-toast-card {
+    @apply bg-gradient-to-br from-amber-50 to-amber-100 
+    dark:from-amber-900/20 dark:to-amber-800/20 
+    rounded-lg border border-amber-200 dark:border-amber-800
+    p-4 
+}
+
+@utility red-toast-card {
+    @apply bg-gradient-to-br from-purple-50 to-purple-100 
+    dark:from-purple-900/20 dark:to-purple-800/20 
+    rounded-lg border border-purple-200 dark:border-purple-800 
+    p-4 
 }
 
 @utility paragraph {
@@ -78,9 +116,9 @@
 
 @utility link {
     @apply text-orange-200 dark:text-orange-200 
-    hover:text-orange-300 dark:hover:text-orange-300
-    underline-offset-2 hover:underline
-    transition-colors duration-200 text-sm;
+        hover:text-orange-300 dark:hover:text-orange-300
+        underline-offset-2 hover:underline
+        transition-colors duration-200 text-sm;
 }
 
 
