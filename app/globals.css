@@ -33,7 +33,7 @@
 }
 
 @utility button-zinc-gradient {
-    @apply bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-800 bg-[length:200%_200%] bg-[position:0%_50%] 
+    @apply cursor-pointer bg-gradient-to-r from-zinc-700 via-zinc-600 to-zinc-800 bg-[length:200%_200%] bg-[position:0%_50%] 
         hover:bg-[position:100%_50%] transition-all duration-500 
         px-8 py-2 rounded-md 
         flex items-center gap-2 
@@ -43,7 +43,9 @@
 @utility button-orange-gradient {
     @apply bg-gradient-to-r from-orange-50 via-orange-100 to-orange-200 dark:from-stone-700 dark:via-stone-600 dark:to-stone-800 bg-[length:200%_200%] 
         bg-[position:0%_50%] hover:bg-[position:100%_50%] transition-all duration-500 
-        px-12 py-4 rounded-md flex items-center gap-2 text-stone-900 dark:text-white disabled:opacity-50
+        px-12 py-4 rounded-md flex items-center gap-2 
+        text-stone-900 dark:text-white disabled:opacity-50
+        cursor-pointer
 }
 
 @utility input {
