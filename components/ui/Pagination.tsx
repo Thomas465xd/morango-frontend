@@ -1,3 +1,4 @@
+import { useSearchParams } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -6,10 +7,22 @@ type PaginationProps = {
     page: number;       // Current page
     totalPages: number; // Total number of pages
     maxPageButtons?: number; // Maximum number of page buttons to show (optional)
-    searchQuery?: string; 
 };
 
-export default function Pagination({ route, page, totalPages, maxPageButtons = 5, searchQuery }: PaginationProps) {
+export default function Pagination({ route, page, totalPages, maxPageButtons = 5 }: PaginationProps) {
+    // Get current url query params to safely rebuild url
+    const searchParams = useSearchParams(); 
+
+    // Build pagination URL's
+    const buildPageHref = (pageNum: number) => {
+        const params = new URLSearchParams(searchParams.toString());
+
+        params.set("page", pageNum.toString());
+
+        return `/${route}?${params.toString()}`;
+    };
+
+
     // Default to 5 page buttons (or less if fewer total pages)
     const actualMaxButtons = Math.min(maxPageButtons, totalPages);
     
@@ -63,16 +76,26 @@ export default function Pagination({ route, page, totalPages, maxPageButtons = 5
     const visiblePages = getVisiblePages();
 
     return (
-        <nav className="flex items-center justify-between border-t border-gray-200 px-4 my-12">
+        <nav className="flex items-center justify-between border-t border-zinc-200 dark:border-zinc-500 px-4 my-12">
             {/* Previous page button */}
             {page > 1 && (
                 <div className="-mt-px flex w-0 flex-1">
                     <Link
-                        href={`${searchQuery ? `/${route}?page=${page - 1}&searchName=${searchQuery}` : `/${route}?page=${page - 1}`}`}
+                        scroll={false}
+                        href={buildPageHref(page - 1)}
                         aria-label="Previous page"
-                        className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                        className="
+                            inline-flex items-center 
+                            border-t-2 border-transparent 
+                            pt-4 pr-1 
+                            text-sm font-medium 
+                            text-zinc-500 
+                            hover:border-zinc-300 hover:text-zinc-700
+                            dark:hover:border-orange-200 dark:hover:text-orange-200
+                            transition-colors duration-200
+                        "
                     >
-                        <ArrowLeft aria-hidden="true" className="mr-3 size-5 text-gray-400" />
+                        <ArrowLeft aria-hidden="true" className="mr-3 size-5" />
                         Anterior
                     </Link>
                 </div>
@@ -85,7 +108,7 @@ export default function Pagination({ route, page, totalPages, maxPageButtons = 5
                     return (
                         <span 
                             key={`ellipsis-${index}`}
-                            className="flex items-center justify-center w-10 h-10 text-gray-600"
+                            className="flex items-center justify-center w-10 h-10 text-zinc-600"
                         >
                             &hellip;
                         </span>
@@ -95,13 +118,14 @@ export default function Pagination({ route, page, totalPages, maxPageButtons = 5
                 // Render page button
                 return (
                     <Link
+                        scroll={false}
                         key={`page-${pageNum}`}
-                        href={`${searchQuery ? `/${route}?page=${pageNum}&searchName=${searchQuery}` : `/${route}?page=${pageNum}`}`}
-                        className={`inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700 ${
+                        href={buildPageHref(pageNum)}
+                        className={`inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium text-zinc-500 ${
                             page === pageNum
-                                ? "border-amber-500 text-amber-600 ring-amber-500"
-                                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                        }`}
+                                ? "border-amber-500 text-amber-600 ring-amber-500 hover:border-orange-300 hover:text-amber-300"
+                                : "border-transparent text-zinc-500 hover:text-zinc-700 hover:border-zinc-300 dark:hover:border-orange-200 dark:hover:text-orange-300"
+                        } transition-colors duration-200`}
                     >
                         {pageNum}
                     </Link>
@@ -112,12 +136,20 @@ export default function Pagination({ route, page, totalPages, maxPageButtons = 5
             {page < totalPages && (
                 <div className="-mt-px flex w-0 flex-1 justify-end">
                     <Link
-                        href={`${searchQuery ? `/${route}?page=${page + 1}&searchName=${searchQuery}` : `/${route}?page=${page + 1}`}`}
+                        scroll={false}
+                        href={buildPageHref(page + 1)}
                         aria-label="Next page"
-                        className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                        className="
+                            inline-flex items-center 
+                            border-t-2 border-transparent 
+                            pt-4 pl-1 
+                            text-sm font-medium text-zinc-500 
+                            hover:border-zinc-300 dark:hover:border-orange-200 dark:hover:text-orange-200 hover:text-zinc-700
+                            transition-colors duration-200
+                        "
                     >
                         Siguiente
-                        <ArrowRight aria-hidden="true" className="ml-3 size-5 text-gray-400" />
+                        <ArrowRight aria-hidden="true" className="ml-3 size-5" />
                     </Link>
                 </div>
             )}

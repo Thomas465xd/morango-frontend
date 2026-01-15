@@ -7,7 +7,7 @@ export default function Example() {
 	return (
         <>
             <NavBar />
-            <main className="grid min-h-screen place-items-center bg-white px-6 pb-24 sm:pb-32 lg:px-8 dark:bg-zinc-900 mt-[130px]">
+            <main className="grid min-h-screen place-items-center bg-white px-6 pb-24 sm:pb-32 lg:px-8 dark:bg-zinc-900">
                 <div className="text-center">
                     <div className="flex justify-center shrink-0 items-center mb-12">
                         <Logo mini />

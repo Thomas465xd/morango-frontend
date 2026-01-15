@@ -20,6 +20,7 @@ type SearchBarProps = {
     mini?: boolean; 
     options?: SelectOption[];
     defaultValue?: string;
+    hideSubmit?: boolean; 
 }
 
 export default function SearchBar({
@@ -30,7 +31,8 @@ export default function SearchBar({
     searchText,
     mini,
     options,
-    defaultValue = ""
+    defaultValue = "", 
+    hideSubmit = false, 
 }: SearchBarProps) {
     const initialValues = {
         search: defaultValue
@@ -139,13 +141,15 @@ export default function SearchBar({
                     )}
                 </div>
 
-                <button 
-                    type="submit" 
-                    className={`py-2 min-w-40 sm:min-w-44 text-white bg-zinc-600 hover:bg-zinc-700 dark:bg-zinc-800 transition-colors rounded-lg font-semibold shadow-md flex gap-2 items-center justify-center`}
-                >
-                    <Search size={18} />
-                    Buscar {searchText}
-                </button>
+                {!hideSubmit && (
+                    <button 
+                        type="submit" 
+                        className={`py-2 min-w-40 sm:min-w-44 text-white bg-zinc-600 hover:bg-zinc-700 dark:bg-zinc-800 transition-colors rounded-lg font-semibold shadow-md flex gap-2 items-center justify-center`}
+                    >
+                        <Search size={18} />
+                        Buscar {searchText}
+                    </button>
+                )}
             </form>
 
             <div className={`w-full ${mini ? "" : "max-w-2xl mx-auto"} mt-2`}>
