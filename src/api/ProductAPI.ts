@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { DiscountForm, ProductForm, ProductTypes, getProductsResponseSchema, productCategoriesResponseSchema } from "../types";
+import { DiscountForm, ProductTypes, getProductByIdResponseSchema, getProductsByIdsResponseSchema, getProductsResponseSchema, productCategoriesResponseSchema } from "../types";
 import api from "@/lib/axios";
 import { CreateProductPayload } from "@/components/admin/products/CreateProductForm";
 
@@ -101,6 +101,82 @@ export async function getProducts(params: ProductSearchParams) {
 
         console.error("Schema Validation Failed", response.error);
     } catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 📦📦 Get Multiple Products by IDs, used for cart
+export async function getProductsByIds(productIds: string[]) {
+    try {
+        if(productIds.length === 0) {
+            return null; 
+        }
+
+        const { data } = await api.get("/products/multiple", {
+            params: {
+                productIds // Axios will handle ?productIds=123&productIds=456
+            },  
+            paramsSerializer: {
+                indexes: null // Necessary so it does not set ?productIds[]=
+            }
+            
+        });
+        
+        //console.log(data)
+        
+        const response = getProductsByIdsResponseSchema.safeParse(data);
+        if(response.success) {
+            //console.log("✅ Respuesta exitosa de la API:", response.data);
+            return response.data;
+        }
+
+        console.error("Schema Validation Failed", response.error);
+    } catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 📋 Get Product by ID & related products
+export async function getProductById(productId: string) {
+	try {
+		const url = `/products/${productId}`;
+		const { data } = await api.get(url);
+        //console.log("✅ Respuesta exitosa de la API:", response.data);
+
+        const response = getProductByIdResponseSchema.safeParse(data);
+        if(response.success) {
+            //console.log("✅ Respuesta exitosa de la API:", response.data);
+            return response.data;
+        }                  
+
+        console.error("Schema Validation Failed", response.error);
+	} catch (error) {
         console.error("❌ Error en la solicitud:", error);
 
         if (isAxiosError(error)) {

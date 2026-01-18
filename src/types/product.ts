@@ -143,8 +143,8 @@ export const getProductsResponseSchema = z.object({
             z.null()
         ]), 
         priceRange: z.union([z.object({
-            min: z.number().int().min(0), 
-            max: z.number().int().min(0), 
+            min: z.string(),
+            max: z.string(),
         }), z.null()]), 
         tags: z.union([
             z.array(z.string()), 
@@ -154,6 +154,16 @@ export const getProductsResponseSchema = z.object({
         sortBy: z.enum(["createdAt", "basePrice", "price", "name", "category"]), 
         sortOrder: z.enum(["asc", "desc"])
 	})
+})
+
+export const getProductByIdResponseSchema = z.object({
+    product: enrichedProductSchema, 
+    relatedProducts:z.array(enrichedProductSchema)
+})
+
+export const getProductsByIdsResponseSchema = z.object({
+    products: z.array(enrichedProductSchema), 
+    total: z.number().min(0)
 })
 
 export type ProductTypes = z.infer<typeof productTypesSchema>;
