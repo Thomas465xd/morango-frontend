@@ -87,7 +87,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
                 aria-haspopup="true"
             >
                 <UserCircle2 />
-                Hola, <span className="highlight">{user.name}</span>
+                Hola, <span className="highlight text-orange-300">{user.name}</span>
                 <ChevronDownIcon
                     aria-hidden="true"
                     className={`-mr-1 size-5 text-gray-400 transition-transform duration-200 ${

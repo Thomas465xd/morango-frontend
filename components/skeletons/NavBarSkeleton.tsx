@@ -2,7 +2,7 @@ export default function NavBarSkeleton() {
     return (
         <>
             {/* Primary navbar skeleton */}
-            <div className="fixed top-0 left-0 right-0 z-50 bg-zinc-800 dark:bg-zinc-800/50 border-b-zinc-700 border-b-2 animate-pulse">
+            <div className="z-50 bg-zinc-800 dark:bg-zinc-800/50 border-b-zinc-700 border-b-2 animate-pulse">
                 <div className="mx-auto flex-between h-14 max-w-7xl px-4 sm:px-6 lg:px-8">
                     {/* Social icons skeleton */}
                     <div className="hidden lg:flex space-x-4">
@@ -21,7 +21,7 @@ export default function NavBarSkeleton() {
             </div>
 
             {/* Secondary navbar skeleton */}
-            <div className="fixed top-[56px] left-0 right-0 bg-black/90 dark:bg-black/10 backdrop-blur-md animate-pulse">
+            <div className="bg-black/90 dark:bg-black/10 border-b-2 border-zinc-600 backdrop-blur-md animate-pulse">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-24 items-center justify-between">
                         {/* Logo skeleton (lg+) */}
