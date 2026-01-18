@@ -5,16 +5,7 @@ import MobileNav from "./MobileNav";
 import DesktopNav from "./DesktopNav";
 import { useAuth } from "@/src/hooks/useAuth";
 import NavBarSkeleton from "../skeletons/NavBarSkeleton";
-
-export const navigation = {
-	pages: [
-        { name: "Inicio", href: "/home"},
-        { name: "Collares", href: "/home/products?productType=collares"},
-		{ name: "Nosotros", href: "/home/about" },
-		{ name: "Preguntas Frecuentes", href: "/home/questions" },
-        { name: "Contacto", href: "/home/contact"}, 
-	],
-};
+import { navigation } from "@/src/types";
 
 export default function NavBar() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

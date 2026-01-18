@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { navigation } from "./NavBar";
 import { usePathname, useRouter } from "next/navigation";
 import { Boxes, LogIn, LogOut, LucideSettings2, PencilLine, ShoppingCart, TableConfigIcon } from "lucide-react";
-import { User } from "@/src/types";
+import { navigation, User } from "@/src/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logout } from "@/src/api/AuthAPI";
 import { toast } from "react-toastify";
@@ -56,10 +55,10 @@ export default function MobileNav({
 		<div
 			className={`
 				fixed
-				top-[9.5rem]
+				top-[96px]
 				left-0
 				z-40
-				h-[calc(100vh-9.5rem)]
+				h-[calc(100vh-96px)]
 				w-80
 				bg-neutral-900
 				shadow-xl
