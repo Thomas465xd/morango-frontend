@@ -92,11 +92,14 @@ export const productSchema = z.object({
 
 }).and(productAttributesByTypeSchema);
 
+export const categoryCountSchema = z.object({
+    productCount: z.number().min(0), 
+    category: z.string()
+})
+
 export const productCategoriesResponseSchema = z.object({
 	categories: z.array(
-		z.object({
-			productCount: z.number(),
-		})
+		categoryCountSchema
 	),
 	totalCategories: z.number().min(0),
 	totalProducts: z.number().min(0),
@@ -142,10 +145,16 @@ export const getProductsResponseSchema = z.object({
             z.string(), 
             z.null()
         ]), 
-        priceRange: z.union([z.object({
-            min: z.string(),
-            max: z.string(),
-        }), z.null()]), 
+        priceRange: z.union([
+            z.object({
+                min: z.string().optional(),
+                max: z.string().optional(),
+            }).refine(
+                v => v.min !== undefined || v.max !== undefined,
+                { message: "At least min or max must be defined" }
+            ),
+            z.null()
+        ]),
         tags: z.union([
             z.array(z.string()), 
             z.null()
@@ -186,6 +195,7 @@ export type ProductForm = Pick<
     attributes: Attributes;
 };
 
+export type CategoryCount = z.infer<typeof categoryCountSchema>; 
 export type RingAttributes = z.infer<typeof ringAttributesSchema>;
 export type NecklaceAttributes = z.infer<typeof necklaceAttributesSchema>;
 export type BraceletAttributes = z.infer<typeof braceletAttributesSchema>;

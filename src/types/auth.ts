@@ -39,7 +39,7 @@ export const userSchema = z.object({
     name: z.string(), 
     surname: z.string(), 
     email: z.email(), 
-    phone: z.string(), 
+    phone: z.string().optional(), 
     password: z.string().nullable(), 
     confirmed: z.boolean(), 
     role: rolesSchema, 
@@ -57,6 +57,20 @@ export const userSchema = z.object({
 
 export const getUserSchema = z.object({
     currentUser: userSchema
+})
+
+export const getUsersSchema = z.object({
+    users: z.array(userSchema), 
+    totalUsers: z.number().min(0), 
+    totalPages: z.number().min(0), 
+    perPage: z.number().min(0), 
+    currentPage: z.number().min(0), 
+    filters: z.object({
+        confirmed: z.string().nullable(), 
+        search: z.string().nullable(), 
+        sortBy: z.string(), 
+        sortOrder: z.number()
+    })
 })
 
 export const registerSchema = z.object({
@@ -77,7 +91,28 @@ export const resetPasswordSchema = registerSchema.pick({
     confirmPassword: true, 
 })
 
+export const updatePasswordSchema = z.object({
+    current_password: z.string(), 
+    password: z.string(), 
+    confirmPassword: z.string()
+})
 
+export const updateProfileSchema = userSchema.pick({
+    name: true, 
+    surname: true, 
+    email: true, 
+    phone: true, 
+    address: true
+}).merge(z.object({
+    address: addressSchema.pick({
+        country: true, 
+        region: true, 
+        city: true, 
+        cityArea: true, 
+        street: true, 
+        zipCode: true
+    })
+}))
 
 //? 📋 Auth Types
 export type Regions = z.infer<typeof regionSchema>
@@ -87,3 +122,5 @@ export type User = z.infer<typeof userSchema>
 export type RegisterUserForm = z.infer<typeof registerSchema>
 export type LoginUserForm = z.infer<typeof loginSchema>
 export type ResetPasswordForm= z.infer<typeof resetPasswordSchema>
+export type UpdateUserPasswordForm= z.infer<typeof updatePasswordSchema>
+export type UpdateUserProfileForm= z.infer<typeof updateProfileSchema> 
