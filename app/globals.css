@@ -19,8 +19,11 @@
 }
 
 @utility button {
-    @apply bg-stone-800 dark:border-zinc-50 dark:hover:border-zinc-500 border-1 text-zinc-50 hover:text-zinc-300 px-4 py-2 rounded-md 
-        disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-stone-800 hover:bg-stone-950 
+    @apply bg-stone-800 dark:border-zinc-50 
+        dark:hover:border-zinc-500 hover:bg-stone-950
+        border-1 text-zinc-50 hover:text-zinc-300 px-4 py-2 rounded-md 
+        disabled:cursor-not-allowed disabled:opacity-50 
+        disabled:hover:bg-stone-800 disabled:dark:hover:border-zinc-50 disabled:hover:text-white 
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 transition-colors duration-200
 }
 

@@ -1,83 +1,54 @@
-import { isAxiosError } from "axios";
-import { DiscountForm, ProductTypes, getProductByIdResponseSchema, getProductsByIdsResponseSchema, getProductsResponseSchema, productCategoriesResponseSchema } from "../types";
 import api from "@/lib/axios";
-import { CreateProductPayload } from "@/components/admin/products/CreateProductForm";
+import { isAxiosError } from "axios";
+import { CreatePaymentForm, getPaymentsAdminResponseSchema, getPaymentStatusResponseSchema, paymentSchema, PaymentStatus, retryPaymentResponseSchema } from "../types";
 
-type ProductSearchParams = {
+type PaymentSearchParams = {
     page: number, 
     perPage: number,
-    productType?: ProductTypes, 
-    tags: string[], 
-    category: string, 
-    sale: boolean, 
-    minPrice: number, 
-    maxPrice: number, 
-    isActive: boolean, 
-    search: string,
-    sortBy: "basePrice" | "name" | "category",
-    sortOrder: "asc" | "desc"
+    search?: string, // Email or tracking Number 
+    status?: PaymentStatus, 
+    startDate?: Date, 
+    endDate?: Date, 
+    sortBy?: "date" | "amount",
+    sortOrder?: "asc" | "desc"
 }
 
-//? 📦 Get products with filtering and sorting
-export async function getProducts(params: ProductSearchParams) {
+//* 📦 Get Payments with filtering and sorting
+export async function getPayments(params: PaymentSearchParams) {
     try {
         //! Destructure Params
         const { 
             page, 
             perPage,
-            productType, // Aros, Anillo
-            tags, // ?tags=silver,gold || ?tags=silver&tags=gold
-            category, // 
-            sale, 
-            minPrice, 
-            maxPrice, 
-            isActive, 
-            search,
+            search, 
+            status, 
+            startDate, 
+            endDate, 
             sortBy, 
             sortOrder
         } = params
 
         // Base URL
-        let url = `/products?perPage=${perPage}&page=${page}`;
+        let url = `/payments/admin?perPage=${perPage}&page=${page}`;
 
-        //* Conditionally add search (name or description) if it exists
+        //* Conditionally add search if it exists
         if (search) {
             url += `&search=${encodeURIComponent(search)}`;
         }
 
-        //* Conditionally add productType if it exists
-        if (productType) {
-            url += `&productType=${encodeURIComponent(productType)}`;
+        //* Conditionally add status if it exists
+        if (status) {
+            url += `&status=${encodeURIComponent(status)}`;
         }
 
-        //* Conditionally add tags if it exists
-        if (tags && tags.length > 0) {
-            url += `&tags=${encodeURIComponent(tags.join(","))}`;
+        //* Conditionally add startDate if it exists
+        if (startDate) {
+            url += `&startDate=${encodeURIComponent(startDate.toISOString())}`;
         }
 
-        //* Conditionally add category if it exists
-        if (category) {
-            url += `&category=${encodeURIComponent(category)}`;
-        }
-
-        //* Conditionally add sale if it exists
-        if (sale) {
-            url += `&sale=${encodeURIComponent(sale)}`;
-        }
-
-        //* Conditionally add minPrice if it exists
-        if (minPrice) {
-            url += `&minPrice=${encodeURIComponent(minPrice)}`;
-        }
-
-       //* Conditionally add maxPrice if it exists
-        if (maxPrice) {
-            url += `&maxPrice=${encodeURIComponent(maxPrice)}`;
-        }
-
-        //* Conditionally add isActive if it exists
-        if (isActive !== undefined && isActive !== null) {
-            url += `&isActive=${encodeURIComponent(isActive)}`;
+        //* Conditionally add endDate if it exists
+        if (endDate) {
+            url += `&endDate=${encodeURIComponent(endDate.toISOString())}`;
         }
 
         //* Conditionally add sortBy if it exists
@@ -93,7 +64,7 @@ export async function getProducts(params: ProductSearchParams) {
         const { data } = await api.get(url);
         //console.log(data)
         
-        const response = getProductsResponseSchema.safeParse(data);
+        const response = getPaymentsAdminResponseSchema.safeParse(data);
         if(response.success) {
             //console.log("✅ Respuesta exitosa de la API:", response.data);
             return response.data;
@@ -118,58 +89,14 @@ export async function getProducts(params: ProductSearchParams) {
 	}
 }
 
-//? 📦📦 Get Multiple Products by IDs, used for cart
-export async function getProductsByIds(productIds: string[]) {
-    try {
-        if(productIds.length === 0) {
-            return null; 
-        }
-
-        const { data } = await api.get("/products/multiple", {
-            params: {
-                productIds // Axios will handle ?productIds=123&productIds=456
-            },  
-            paramsSerializer: {
-                indexes: null // Necessary so it does not set ?productIds[]=
-            }
-            
-        });
-        
-        //console.log(data)
-        
-        const response = getProductsByIdsResponseSchema.safeParse(data);
-        if(response.success) {
-            //console.log("✅ Respuesta exitosa de la API:", response.data);
-            return response.data;
-        }
-
-        console.error("Schema Validation Failed", response.error);
-    } catch (error) {
-        console.error("❌ Error en la solicitud:", error);
-
-        if (isAxiosError(error)) {
-            console.error("🔍 Error de Axios detectado:");
-            console.error("➡️ Código de estado:", error.response?.status);
-            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
-            console.error("➡️ Respuesta completa:", error.response?.data);
-
-            // Lanzamos un error más detallado para que pueda ser manejado correctamente
-            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
-        } else {
-            console.error("⚠️ Error desconocido:", error);
-            throw new Error("Error inesperado. Intenta nuevamente.");
-        }
-	}
-}
-
-//? 📋 Get Product by ID & related products
-export async function getProductById(productId: string) {
+//* ⛓️ Get Payment by ID Admin
+export async function getPaymentByIdAdmin(paymentId: string) {
 	try {
-		const url = `/products/${productId}`;
+		const url = `/payments/admin/${paymentId}`;
 		const { data } = await api.get(url);
-        //console.log("✅ Respuesta exitosa de la API:", response.data);
+        // console.log(data)
 
-        const response = getProductByIdResponseSchema.safeParse(data);
+        const response = paymentSchema.safeParse(data);
         if(response.success) {
             //console.log("✅ Respuesta exitosa de la API:", response.data);
             return response.data;
@@ -194,14 +121,13 @@ export async function getProductById(productId: string) {
 	}
 }
 
-//? 📋 Get Products Categories with product count per category (list all unique categories)
-export async function getProductsCategories() {
+//* ⛓️ Get Payment by ID Auth User
+export async function getPaymentByIdUser (paymentId: string) {
 	try {
-		const url = `/products/categories`;
+		const url = `/payments/${paymentId}`;
 		const { data } = await api.get(url);
-        //console.log("✅ Respuesta exitosa de la API:", response.data);
 
-        const response = productCategoriesResponseSchema.safeParse(data);
+        const response = paymentSchema.safeParse(data);
         if(response.success) {
             //console.log("✅ Respuesta exitosa de la API:", response.data);
             return response.data;
@@ -226,10 +152,67 @@ export async function getProductsCategories() {
 	}
 }
 
-//? 🛠️ Register new Product
-export async function createProduct(formData: CreateProductPayload) {
+//? 🛠️ Create MP Payment Preference
+export async function createPreference(orderId: string) {
 	try {
-		const url = "/products";
+		const url = "/payments/create-preference";
+		const response = await api.post(url, { orderId });
+
+		return response.data;
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 🛠️ Retry MP Payment Preference | Update preference for an unpaid order
+export async function retryPaymentPreference({ orderId, token } : { orderId: string, token: string }) {
+	try {
+		const url = `/payments/order/retry/${orderId}?token=${token}`;
+		const { data } = await api.post(url);
+
+        const response = retryPaymentResponseSchema.safeParse(data);
+        if(response.success) {
+            //console.log("✅ Respuesta exitosa de la API:", response.data);
+            return response.data;
+        }                  
+
+        console.error("Schema Validation Failed", response.error);
+	} catch (error) {
+        console.error("❌ Error en la solicitud:", error);
+
+        if (isAxiosError(error)) {
+            console.error("🔍 Error de Axios detectado:");
+            console.error("➡️ Código de estado:", error.response?.status);
+            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
+            console.error("➡️ Respuesta completa:", error.response?.data);
+
+            // Lanzamos un error más detallado para que pueda ser manejado correctamente
+            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
+        } else {
+            console.error("⚠️ Error desconocido:", error);
+            throw new Error("Error inesperado. Intenta nuevamente.");
+        }
+	}
+}
+
+//? 🛠️ Create MP Payment
+export async function createPayment(formData: CreatePaymentForm) {
+	try {
+		const url = "/payments/create-payment";
+        // console.log("FormDATa", formData)
 		const response = await api.post(url, formData);
 
 		return response.data;
@@ -251,11 +234,12 @@ export async function createProduct(formData: CreateProductPayload) {
 	}
 }
 
-//? ✍️ Edit Product 
-export async function updateProduct({ productId, formData } : { productId: string, formData: CreateProductPayload}) {
+//? 🛠️ ADMIN Process Refund
+export async function processRefund(paymentId: string) {
 	try {
-		const url = `/products/${productId}`;
-		const response = await api.patch(url, formData);
+		const url = `/payments/admin/refund/${paymentId}`;
+        // console.log("FormDATa", formData)
+		const response = await api.post(url);
 
 		return response.data;
 	} catch (error) {
@@ -276,13 +260,19 @@ export async function updateProduct({ productId, formData } : { productId: strin
 	}
 }
 
-//? ✍️ Update Product Discount
-export async function updateDiscount({ productId, formData } : { productId: string, formData: DiscountForm }) {
+//* ⛓️ Get Payment status for order PUBLIC
+export async function getPaymentStatus(orderId: string) {
 	try {
-		const url = `/products/discounts/${productId}`;
-		const response = await api.patch(url, formData);
+		const url = `/payments/order/status/${orderId}`;
+		const { data } = await api.get(url);
 
-		return response.data;
+        const response = getPaymentStatusResponseSchema.safeParse(data);
+        if(response.success) {
+            //console.log("✅ Respuesta exitosa de la API:", response.data);
+            return response.data;
+        }                  
+
+        console.error("Schema Validation Failed", response.error);
 	} catch (error) {
         console.error("❌ Error en la solicitud:", error);
 
@@ -301,27 +291,5 @@ export async function updateDiscount({ productId, formData } : { productId: stri
 	}
 }
 
-//? 🛠️ Register new Product
-export async function deleteProduct(productId: string) {
-	try {
-		const url = `/products/${productId}`;
-		const response = await api.delete(url);
-
-		return response.data;
-	} catch (error) {
-        console.error("❌ Error en la solicitud:", error);
-
-        if (isAxiosError(error)) {
-            console.error("🔍 Error de Axios detectado:");
-            console.error("➡️ Código de estado:", error.response?.status);
-            console.error("➡️ Mensaje de error:", error.response?.data?.errors || error.message);
-            console.error("➡️ Respuesta completa:", error.response?.data);
-
-            // Lanzamos un error más detallado para que pueda ser manejado correctamente
-            throw new Error(error.response?.data?.errors[0].message || "Ocurrió un error en la API");
-        } else {
-            console.error("⚠️ Error desconocido:", error);
-            throw new Error("Error inesperado. Intenta nuevamente.");
-        }
-	}
-}
+// 	5416 7526 0258 2580 
+// test master card for mp
