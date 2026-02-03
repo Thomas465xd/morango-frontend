@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/components/providers/QueryClientProvider";
 import { Theme } from "@/components/providers/ThemeProvider";
 import ToastProvider from "@/components/providers/ToastProvider";
 import BackToTopButton from "@/components/ui/BackToTop";
+import MercadoPagoProvider from "@/components/providers/MercadoPagoProvider";
 
 // Font optimization
 const nunito = Nunito({
@@ -83,11 +84,13 @@ export default function RootLayout({
 				className="font-sans antialiased tracking-wide flex min-h-screen flex-col"
 			>
                 <ReactQueryProvider>
-                    <Theme>
-                        <ToastProvider />
-                            {children}
-                        <BackToTopButton />
-                    </Theme>
+                    <MercadoPagoProvider>
+                        <Theme>
+                            <ToastProvider />
+                                {children}
+                            <BackToTopButton />
+                        </Theme>
+                    </MercadoPagoProvider>
                 </ReactQueryProvider>
 			</body>
 		</html>

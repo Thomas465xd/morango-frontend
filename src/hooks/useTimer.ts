@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export const useTimer = (expiresAt?: number) => {
     const [timeRemaining, setTimeRemaining] = useState<string>("");
+    const [diffMs, setDiffMs] = useState<number | null>(null); 
     const [isExpired, setIsExpired] = useState(true);
 
     useEffect(() => {
@@ -14,6 +15,7 @@ export const useTimer = (expiresAt?: number) => {
         const updateTimer = () => {
             const now = Date.now();
             const diffMs = expiresAt - now;
+            setDiffMs(diffMs)
 
             // If timer gets to 0 or below, then set timeRemaining to Expired and return. 
             if (diffMs <= 0) {
@@ -21,6 +23,12 @@ export const useTimer = (expiresAt?: number) => {
                 setIsExpired(true);
                 return;
             }
+
+            // console.log({
+            //     expiresAt,
+            //     now: Date.now(),
+            //     diff: expiresAt - Date.now(),
+            // });
 
             setIsExpired(false);
 
@@ -42,5 +50,9 @@ export const useTimer = (expiresAt?: number) => {
         return () => clearInterval(interval);
     }, [expiresAt]);
 
-    return { timeRemaining, isExpired };
+    return { 
+        timeRemaining, 
+        isExpired, 
+        remainingMs: diffMs 
+    };
 };
