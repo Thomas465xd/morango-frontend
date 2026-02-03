@@ -23,6 +23,7 @@ import { Attributes, BraceletAttributes, EarringAttributes, NecklaceAttributes, 
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { FieldErrors } from "react-hook-form";
 import { categories, productTypes } from "@/src/types";
+import { cleanAttributes } from "@/src/utils/form";
 
 function isRingErrors(
     errors: FieldErrors<Attributes> | undefined
@@ -192,19 +193,6 @@ export default function CreateProductForm() {
 		const newTags = currentTags.filter((_, i) => i !== index);
 		setValue("tags", newTags, { shouldValidate: true });
 	};
-    
-    function cleanAttributes(
-        attrs: Record<string, unknown>
-    ): Record<string, string | number> {
-        return Object.fromEntries(
-            Object.entries(attrs).filter(
-            ([_, value]) =>
-                value !== "" &&
-                value !== undefined &&
-                value !== null
-            )
-        ) as Record<string, string | number>;
-    }
 
 
     const onSubmit = async (formData: ProductForm) => {
@@ -224,8 +212,6 @@ export default function CreateProductForm() {
             setIsSubmitting(false);
         }
     };
-
-
 
 	const renderAttributeFields = () => {
 		switch (selectedProductType) {

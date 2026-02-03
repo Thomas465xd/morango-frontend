@@ -1,4 +1,4 @@
-import ProductsTable from "@/components/admin/products/ProductsTable";
+import AdminProductsView from "@/views/admin/AdminProductsView";
 import { PencilLineIcon } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function page() {
     return (
         <section className="p-8">
-            <div className="flex-between">
+            <div className="space-y-4 sm:flex-between">
                 <div className="">
                     <h1 className="title">
                         Productos
@@ -30,7 +30,7 @@ export default function page() {
                 </Link>
             </div>
 
-            <ProductsTable />
+            <AdminProductsView />
         </section>
     )
 }

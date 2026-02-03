@@ -92,7 +92,7 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
 			reset();
 			setUploadedImages([]);
 
-            router.push(`/admin/products`)
+            router.back(); 
 		},
 	});
 

@@ -1,6 +1,6 @@
 import Dialog from "@/components/ui/Dialog";
 import { deleteProduct } from "@/src/api/ProductAPI";
-import { EnrichedProduct } from "@/src/types";
+import { EnrichedProduct, RingAttributes, NecklaceAttributes, BraceletAttributes, EarringAttributes } from "@/src/types";
 import { copyToClipboard } from "@/src/utils/copy";
 import { formatDate } from "@/src/utils/date";
 import { finalPriceColorMap, getDiscountState } from "@/src/utils/discount";
@@ -31,6 +31,71 @@ const getStatusInfo = (isActive: boolean) => {
     return isActive
         ? { label: "Activo", color: "bg-green-200 text-green-800 dark:bg-green-300 dark:text-green-900" }
         : { label: "Inactivo", color: "bg-red-200 text-red-800" };
+};
+
+// Component to render attributes based on product type
+const ProductAttributes = ({ product }: { product: EnrichedProduct }) => {
+    const renderAttributeRow = (label: string, value: string | number | undefined) => {
+        if (value === undefined || value === null) return null;
+        return (
+            <div className="flex justify-between items-center py-1.5 border-b border-zinc-200 dark:border-zinc-600 last:border-b-0">
+                <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">{label}:</span>
+                <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">{value}</span>
+            </div>
+        );
+    };
+
+    const renderRingAttributes = (attrs: RingAttributes) => (
+        <div className="space-y-1">
+            {renderAttributeRow("Tamaño", attrs.size)}
+            {renderAttributeRow("Material", attrs.material)}
+            {renderAttributeRow("Piedra Preciosa", attrs.gemstone)}
+            {renderAttributeRow("Quilates", attrs.carats)}
+        </div>
+    );
+
+    const renderNecklaceAttributes = (attrs: NecklaceAttributes) => (
+        <div className="space-y-1">
+            {renderAttributeRow("Largo", attrs.length)}
+            {renderAttributeRow("Material", attrs.material)}
+            {renderAttributeRow("Tipo de Cierre", attrs.claspType)}
+            {renderAttributeRow("Tipo de Cadena", attrs.chainType)}
+        </div>
+    );
+
+    const renderBraceletAttributes = (attrs: BraceletAttributes) => (
+        <div className="space-y-1">
+            {renderAttributeRow("Largo", attrs.length)}
+            {renderAttributeRow("Material", attrs.material)}
+            {renderAttributeRow("Tipo de Cierre", attrs.claspType)}
+            {renderAttributeRow("Estilo", attrs.style)}
+        </div>
+    );
+
+    const renderEarringAttributes = (attrs: EarringAttributes) => (
+        <div className="space-y-1">
+            {renderAttributeRow("Tipo", attrs.type)}
+            {renderAttributeRow("Material", attrs.material)}
+            {renderAttributeRow("Tipo de Soporte", attrs.backType)}
+            {renderAttributeRow("Largo", attrs.length)}
+        </div>
+    );
+
+    return (
+        <div className="bg-zinc-100 dark:bg-zinc-600/20 p-3 rounded-md">
+            <div className="flex items-center gap-2 mb-3">
+                <Package size={16} className="text-zinc-700 dark:text-zinc-300" />
+                <span className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                    Especificaciones del Producto
+                </span>
+            </div>
+            
+            {product.productType === "Anillo" && renderRingAttributes(product.attributes as RingAttributes)}
+            {product.productType === "Collar" && renderNecklaceAttributes(product.attributes as NecklaceAttributes)}
+            {product.productType === "Pulsera" && renderBraceletAttributes(product.attributes as BraceletAttributes)}
+            {product.productType === "Aros" && renderEarringAttributes(product.attributes as EarringAttributes)}
+        </div>
+    );
 };
 
 export default function ProductEntry({ product } : ProductEntryProps) {
@@ -229,7 +294,7 @@ export default function ProductEntry({ product } : ProductEntryProps) {
                     </div>
                 </td>
 
-                <td className="px-6 py-4 text-sm whitespace-nowrap flex justify-end">
+                <td className="px-6 py-4 whitespace-nowrap flex justify-end">
                     {(() => {
                         const statusInfo =
                             getStatusInfo(
@@ -351,6 +416,9 @@ export default function ProductEntry({ product } : ProductEntryProps) {
                                         }
                                     </p>
                                 </div>
+
+                                {/* Product Attributes Section */}
+                                <ProductAttributes product={product} />
 
                                 {discount && discount.percentage > 0 && (
                                     <>

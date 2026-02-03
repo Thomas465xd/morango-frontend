@@ -62,7 +62,7 @@ export default function SetDiscountForm({ productId, basePrice, discountPercenta
 			toast.success(data.message || "Descuento actualizado exitosamente");
 			queryClient.invalidateQueries({ queryKey: ["products"] });
 			queryClient.invalidateQueries({ queryKey: ["product", productId] });
-			router.push("/admin/products");
+			router.back();
 		},
 	});
 

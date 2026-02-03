@@ -1,7 +1,5 @@
 "use client"; 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 import {
     Pen,
 	Tag,
@@ -12,12 +10,11 @@ import {
     ThumbsUp,
     ThumbsDown
 } from "lucide-react";
-import { toast } from "react-toastify";
 import { EnrichedProduct } from "@/src/types/product";
 import Pagination from "@/components/ui/Pagination";
 import SearchBar from "@/components/ui/SearchBar";
 import Dialog from "@/components/ui/Dialog";
-import { parseBoolean, parseProductType, parseSortBy, parseSortOrder, ProductType, productTypeValues, SortBy } from "@/src/utils/params";
+import { ProductSortBy, ProductType, productTypeValues, SortOrder, } from "@/src/utils/params";
 import {
     ArrowUpDown,
     ArrowUp,
@@ -25,186 +22,150 @@ import {
     X,
     Plus,
 } from "lucide-react";
-import AdminTableSkeleton from "@/components/skeletons/AdminTablesSkeleton";
 import ProductEntry from "./ProductEntry";
-import { getProducts } from "@/src/api/ProductAPI";
 
-export default function ProductsTable() {
-    const searchParams = useSearchParams();
+type ProductsTableProps = {
+    products: EnrichedProduct[]
+    totalProducts: number
+    totalPages: number 
+    page: number 
+    sortBy: ProductSortBy 
+    sortOrder: SortOrder
+    hasActiveSearch: boolean 
 
-    //* Search parameters
-    const search = searchParams.get("search") || ""; 
+    // Params
+    sale?: boolean
+    isActive?: boolean 
+    minPrice?: number 
+    maxPrice?: number 
+    category?: string 
+    tags?: string[] 
+    productType?: ProductType
+    search?: string
 
-    const productType = parseProductType(searchParams.get("productType") || ""); 
+    // URL params updates
+    onFilterChange: (key: string, value: string | string[] | null) => void;
+    onClearFilters: () => void;
+    onSortChange: (field: ProductSortBy) => void;
+}
 
-    const tags = searchParams.getAll("tags") || ""; 
-    const category = searchParams.get("category") || ""; 
-    const minPrice = Number(searchParams.get("minPrice") || 0); 
-    const maxPrice = Number(searchParams.get("maxPrice") || 0); 
-
-    const sortBy = parseSortBy(searchParams.get("sortBy") || "name"); 
-    const sortOrder = parseSortOrder(searchParams.get("sortOrder") || "desc"); 
-
-    const sale = parseBoolean(searchParams.get("sale"), false); 
-    const isActive = parseBoolean(searchParams.get("isActive"), true);
-
-    const page = parseInt(searchParams.get("page") || "1", 10)
-
-	const router = useRouter();
-
+export default function ProductsTable({
+    products, 
+    totalProducts, 
+    totalPages, 
+    page, 
+    sortBy, 
+    sortOrder, 
+    hasActiveSearch, 
+    sale, 
+    isActive, 
+    minPrice, 
+    maxPrice, 
+    category, 
+    tags, 
+    productType, 
+    search,
+    onFilterChange, 
+    onClearFilters, 
+    onSortChange
+} : ProductsTableProps) {
     const [showProductTypeModal, setShowProductTypeModal] = useState(false);
     const [tagInput, setTagInput] = useState("");
     const [selectedTags, setSelectedTags] = useState<string[]>(tags as string[]);
+    const [minPriceInput, setMinPriceInput] = useState<string>(minPrice ? minPrice.toString() : "");
+    const [maxPriceInput, setMaxPriceInput] = useState<string>(maxPrice ? maxPrice.toString() : "");
+    
+    const minPriceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const maxPriceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-	const perPage = 10;
-
-	const { data, isLoading, isError } = useQuery({
-		queryKey: [
-            "products", 
-            page, 
-            search, 
-            productType, 
-            tags, 
-            category, 
-            minPrice, 
-            maxPrice, 
-            sortBy, 
-            sortOrder, 
-            sale, 
-            isActive, 
-        ],
-		queryFn: () =>
-			getProducts({
-				page,
-				perPage,
-                productType, 
-                tags, 
-                category, 
-                minPrice, 
-                maxPrice, 
-                sortBy, 
-                sortOrder, 
-                sale, 
-                isActive, 
-                search,
-			}),
-		retry: false,
-	});
-
-	const products = data?.products || [];
-    const totalProducts = data?.totalProducts || 0; 
-	const totalPages = data?.totalPages || 1;
-
-    const hasActiveSearch =
-        search ||
-        productType ||
-        tags.length > 0 ||
-        category ||
-        minPrice > 0 ||
-        maxPrice > 0 ||
-        sale ||
-        searchParams.has("isActive");
-        
-	if (isError) {
-		toast.error("Error al cargar productos");
-		return ;
-	}
-
-	if (isLoading) return <AdminTableSkeleton />;
-
-
-
-    // Will extract this logic to reuse it across different components
-    const updateSearchParams = (key: string, value: string | null) => {
-        const params = new URLSearchParams(searchParams.toString());
-        
-        // console.log(key, value)
-
-        if (value === null || value === "") {
-            params.delete(key);
-        } else {
-            params.set(key, value);
+    const getSortIcon = (field: ProductSortBy) => {
+        if (sortBy !== field) {
+            return <ArrowUpDown size={14} className="text-zinc-400" />
         }
-        
-        // Reset to page 1 when filters change
-        params.set("page", "1");
 
-        // console.log(params.get("isActive"))
-        
-        router.push(`?${params.toString()}`);
-    };
-
-    const toggleSort = (field: SortBy) => {
-        const params = new URLSearchParams(searchParams.toString());
-        
-        if (sortBy === field) {
-            // Toggle sort order
-            const newOrder = sortOrder === "asc" ? "desc" : "asc";
-            params.set("sortOrder", newOrder);
-        } else {
-            // New field, default to asc
-            params.set("sortBy", field);
-            params.set("sortOrder", "asc");
-        }
-        
-        params.set("page", "1");
-        router.push(`?${params.toString()}`);
-    };
-
-    const getSortIcon = (field: SortBy) => {
-    if (sortBy !== field) {
-        return <ArrowUpDown size={14} className="text-zinc-400" />;
+        return sortOrder === "asc"
+            ? <ArrowUp size={14} className="text-white" />
+            : <ArrowDown size={14} className="text-white" />
     }
-    return sortOrder === "asc" 
-        ? <ArrowUp size={14} className="text-white" />
-        : <ArrowDown size={14} className="text-white" />;
-    };
 
     const handleProductTypeSelect = (type: ProductType) => {
-        updateSearchParams("productType", type);
+        onFilterChange("productType", type);
         setShowProductTypeModal(false);
     };
-
+    
     const handleTagAdd = () => {
-        if (tagInput.trim() && !selectedTags.includes(tagInput.trim())) {
-            const newTags = [...selectedTags, tagInput.trim()];
-            setSelectedTags(newTags);
-            
-            const params = new URLSearchParams(searchParams.toString());
-            params.delete("tags");
-            newTags.forEach(tag => params.append("tags", tag));
-            params.set("page", "1");
-            
-            router.push(`?${params.toString()}`);
-            setTagInput("");
-        }
+        const value = tagInput.trim();
+        if (!value || selectedTags.includes(value)) return;
+
+        const newTags = [...selectedTags, value];
+        setSelectedTags(newTags);
+
+        onFilterChange("tags", newTags);
+        setTagInput("");
     };
 
     const handleTagRemove = (tagToRemove: string) => {
         const newTags = selectedTags.filter(tag => tag !== tagToRemove);
         setSelectedTags(newTags);
+
+        onFilterChange("tags", newTags.length ? newTags : null);
+    };
+
+    const handleMinPriceChange = (value: string) => {
+        setMinPriceInput(value);
         
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("tags");
-        newTags.forEach(tag => params.append("tags", tag));
-        params.set("page", "1");
+        // Clear existing timeout
+        if (minPriceTimeoutRef.current) {
+            clearTimeout(minPriceTimeoutRef.current);
+        }
         
-        router.push(`?${params.toString()}`);
+        //! Debounce the API call | timeout before submitting filters to URL params
+        minPriceTimeoutRef.current = setTimeout(() => {
+            const numValue = value ? parseFloat(value) : 0;
+            onFilterChange("minPrice", numValue > 0 ? numValue.toString() : null);
+        }, 1000);
+    };
+
+    const handleMaxPriceChange = (value: string) => {
+        setMaxPriceInput(value);
+        
+        // Clear existing timeout
+        if (maxPriceTimeoutRef.current) {
+            clearTimeout(maxPriceTimeoutRef.current);
+        }
+        
+        // Debounce the API call
+        maxPriceTimeoutRef.current = setTimeout(() => {
+            const numValue = value ? parseFloat(value) : 0;
+            onFilterChange("maxPrice", numValue > 0 ? numValue.toString() : null);
+        }, 500);
     };
 
     const toggleSale = () => {
-        updateSearchParams("sale", sale ? null : "true");
+        onFilterChange("sale", sale ? null : "true");
     };
 
     const toggleIsActive = () => {
-        console.log(isActive)
-        updateSearchParams("isActive", isActive ? "false" : "true");
+        onFilterChange("isActive", isActive ? "false" : "true");
     };
 
     const clearAllFilters = () => {
-        router.push("?page=1");
-        setSelectedTags([]);
+        // Clear any pending timeouts
+        if (minPriceTimeoutRef.current) clearTimeout(minPriceTimeoutRef.current);
+        if (maxPriceTimeoutRef.current) clearTimeout(maxPriceTimeoutRef.current);
+        
+        onClearFilters(); 
+        setMinPriceInput("");
+        setMaxPriceInput("");
     };
+
+    // Cleanup timeouts on unmount
+    useEffect(() => {
+        return () => {
+            if (minPriceTimeoutRef.current) clearTimeout(minPriceTimeoutRef.current);
+            if (maxPriceTimeoutRef.current) clearTimeout(maxPriceTimeoutRef.current);
+        };
+    }, []);
 
 	return (
 		<div className="overflow-hidden rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-700 mt-12">
@@ -250,7 +211,7 @@ export default function ProductsTable() {
                                         className="inline ml-2"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            updateSearchParams("productType", null);
+                                            onFilterChange("productType", null);
                                         }}
                                     />
                                 )}
@@ -270,6 +231,25 @@ export default function ProductsTable() {
                                 ))}
                             </div>
                             )}
+                        </div>
+
+                        {/* Price Range Inputs */}
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="number"
+                                placeholder="Precio mín."
+                                value={minPriceInput}
+                                onChange={(e) => handleMinPriceChange(e.target.value)}
+                                className="w-32 px-3 py-1.5 text-sm border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <span className="text-zinc-400">-</span>
+                            <input
+                                type="number"
+                                placeholder="Precio máx."
+                                value={maxPriceInput}
+                                onChange={(e) => handleMaxPriceChange(e.target.value)}
+                                className="w-32 px-3 py-1.5 text-sm border border-zinc-300 dark:border-zinc-600 rounded-md bg-white dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
                         </div>
 
                         {/* Tags input */}
@@ -340,7 +320,7 @@ export default function ProductsTable() {
                             {/* Producto - Sortable */}
                             <th className="px-6 py-4 font-medium">
                                 <button
-                                    onClick={() => toggleSort("name")}
+                                    onClick={() => onSortChange("name")}
                                     className="flex items-center gap-2 hover:text-zinc-300 
                                     transition-colors cursor-pointer group relative"
                                 >
@@ -365,7 +345,7 @@ export default function ProductsTable() {
                             {/* Categoría - Sortable */}
                             <th className="px-6 py-4 font-medium">
                                 <button
-                                    onClick={() => toggleSort("category")}
+                                    onClick={() => onSortChange("category")}
                                     className="flex items-center gap-2 hover:text-zinc-300 
                                     transition-colors cursor-pointer group relative"
                                 >
@@ -382,7 +362,7 @@ export default function ProductsTable() {
                             {/* Precio - Sortable */}
                             <th className="px-6 py-4 font-medium">
                                 <button
-                                    onClick={() => toggleSort("basePrice")}
+                                    onClick={() => onSortChange("basePrice")}
                                     className="flex items-center gap-2 hover:text-zinc-300 
                                     transition-colors cursor-pointer group relative"
                                 >
@@ -464,14 +444,15 @@ export default function ProductsTable() {
 						Mostrando {products.length} de{" "}
 						{totalProducts || 0} productos
 					</p>
-                    {totalPages > 1 && (
-                        <Pagination
-                            route="admin/products"
-                            page={page}
-                            totalPages={totalPages}
-                        />
-                    )}
 				</div>
+                
+                {totalPages > 1 && (
+                    <Pagination
+                        route="admin/products"
+                        page={page}
+                        totalPages={totalPages}
+                    />
+                )}
 			</div>
 		</div>
 	);
