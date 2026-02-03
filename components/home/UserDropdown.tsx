@@ -132,7 +132,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
                         Mi Perfil
                     </Link>
                     <Link
-                        href="/home/orders"
+                        href="/home/profile/orders"
                         className="flex-align px-4 py-2 text-sm text-gray-300
                             hover:bg-white/5 hover:text-white
                             transition-colors duration-150"

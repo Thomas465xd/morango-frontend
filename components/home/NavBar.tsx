@@ -9,10 +9,15 @@ import { navigation } from "@/src/types";
 
 export default function NavBar() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isSecondarySticky, setIsSecondarySticky] = useState(false); 
     const { user, isLoading } = useAuth(); 
 
 	const toggleMobileMenu = () => {
 		setMobileMenuOpen((prev) => !prev);
+	};
+
+	const toggleIsSecondarySticky = (state: boolean) => {
+		setIsSecondarySticky(state);
 	};
 
     useEffect(() => {
@@ -39,6 +44,7 @@ export default function NavBar() {
                     <DesktopNav
                         open={mobileMenuOpen}
                         onToggleMobileMenu={toggleMobileMenu}
+                        onToggleIsSecondarySticky={toggleIsSecondarySticky}
                         navigation={navigation}
                         user={user}
                     />
@@ -56,6 +62,7 @@ export default function NavBar() {
                 <MobileNav
                     open={mobileMenuOpen}
                     onToggle={toggleMobileMenu}
+                    isSecondarySticky={isSecondarySticky}
                     navigation={navigation}
                     user={user}
                 />
@@ -70,6 +77,7 @@ export default function NavBar() {
                         <DesktopNav
                             open={mobileMenuOpen}
                             onToggleMobileMenu={toggleMobileMenu}
+                            onToggleIsSecondarySticky={toggleIsSecondarySticky}
                             navigation={navigation}
                             user={user}
                         />
@@ -87,6 +95,7 @@ export default function NavBar() {
                     <MobileNav
                         open={mobileMenuOpen}
                         onToggle={toggleMobileMenu}
+                        isSecondarySticky={isSecondarySticky}
                         navigation={navigation}
                         user={user}
                     />

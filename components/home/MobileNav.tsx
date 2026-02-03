@@ -13,6 +13,7 @@ type MobileMenuProps = {
 	open: boolean;
 	onToggle: () => void;
 	navigation: typeof navigation;
+    isSecondarySticky: boolean; 
     user?: User;
 };
 
@@ -21,6 +22,7 @@ export default function MobileNav({
 	open,
 	onToggle,
 	navigation,
+    isSecondarySticky,
     user
 } : MobileMenuProps) {
     const currentPath = usePathname(); 
@@ -55,10 +57,12 @@ export default function MobileNav({
 		<div
 			className={`
 				fixed
-				top-[96px]
+				${isSecondarySticky ? 
+                    "top-[96px] h-[calc(100vh-96px)]" : 
+                    "top-[152px] h-[calc(100vh-152px)]"
+                }
 				left-0
 				z-40
-				h-[calc(100vh-96px)]
 				w-80
 				bg-neutral-900
 				shadow-xl
@@ -73,6 +77,17 @@ export default function MobileNav({
 			<div className="flex flex-col h-full px-6 py-6">
 				{/* Navigation */}
 				<ul className="space-y-5">
+
+                        <li>
+							<Link
+								href={"/home"}
+								onClick={onToggle}
+								className={`block text-lg ${currentPath === "/home" ? "text-orange-300" : "text-white hover:text-orange-200"}  transition-colors`}
+							>
+								Inicio
+							</Link>
+						</li>
+
 					{navigation.pages.map((page) => (
 						<li key={page.name}>
 							<Link
