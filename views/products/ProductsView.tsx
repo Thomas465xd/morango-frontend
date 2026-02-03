@@ -5,15 +5,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import Pagination from "@/components/ui/Pagination";
 import SearchBar from "@/components/ui/SearchBar";
-import { parseBoolean, parseProductType, parseSortBy, parseSortOrder, ProductType, productTypeValues } from "@/src/utils/params";
+import { parseBoolean, parseProductType, parseSortByProducts, parseSortOrder, ProductType, productTypeValues } from "@/src/utils/params";
 import {
     X,
     Plus,
+    PanelLeft,
 } from "lucide-react";
 import ProductsViewSkeleton from "@/components/skeletons/ProductsViewSkeleton";
 import { getProducts } from "@/src/api/ProductAPI";
 import ProductListing from "@/components/products/ProductListing";
 import { useMobile } from "@/src/hooks/useMobile";
+import Dialog from "@/components/ui/Dialog";
 
 export default function ProductsView() {
     const isMobile = useMobile(); 
@@ -29,7 +31,7 @@ export default function ProductsView() {
     const minPrice = Number(searchParams.get("minPrice") || 0); 
     const maxPrice = Number(searchParams.get("maxPrice") || 0); 
 
-    const sortBy = parseSortBy(searchParams.get("sortBy") || "name"); 
+    const sortBy = parseSortByProducts(searchParams.get("sortBy") || "name"); 
     const sortOrder = parseSortOrder(searchParams.get("sortOrder") || "desc"); 
 
     const sale = parseBoolean(searchParams.get("sale"), false); 
@@ -148,7 +150,6 @@ export default function ProductsView() {
 		return 
 	}
 
-    // TODO: change skeleton to ProductsViewSkeleton
 	if (isLoading) return <ProductsViewSkeleton />;
 
     // Will extract this logic to reuse it across different components
@@ -218,7 +219,7 @@ export default function ProductsView() {
                 <div className="space-y-4">
                     <div className="">
                         <SearchBar
-                            route="admin/products"
+                            route="home/products"
                             param="search"
                             inputType="text"
                             formText="Buscar productos por nombre o descripción"
@@ -298,7 +299,11 @@ export default function ProductsView() {
                             </div>
                             <button
                                 onClick={handleTagAdd}
-                                className="p-1.5 bg-orange-400 text-white rounded-md hover:bg-orange-500 transition-colors"
+                                className="
+                                    p-1.5 
+                                    bg-zinc-700 dark:bg-orange-300 text-white
+                                    rounded-md hover:bg-black dark:hover:bg-orange-300/90 transition-colors duration-100
+                                "
                                 title="Agregar etiqueta"
                             >
                                 <Plus size={16} />
@@ -347,9 +352,17 @@ export default function ProductsView() {
 
                 <button
                     onClick={() => setShowFiltersModal(true)}
-                    className="tracking-widest mt-4 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-600 transition-colors cursor-pointer"
+                    className="
+                        tracking-widest mt-4 
+                        text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-600 
+                        transition-colors cursor-pointer
+                        flex-align
+                        group relative
+                    "
                 >
                     FILTROS
+                    <PanelLeft />
+                    <Dialog position="bottom">Ver filtros</Dialog>
                 </button>
             </div>
 
