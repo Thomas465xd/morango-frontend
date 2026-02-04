@@ -161,6 +161,7 @@ export default function ProductDetails({
                                                     alt={`${product.name} - Imagen ${index + 1}`}
                                                     src={image}
                                                     fill
+                                                    sizes="100px"
                                                     className="object-cover"
                                                 />
                                             </span>
@@ -180,6 +181,7 @@ export default function ProductDetails({
                                                 alt={`${product.name} - Vista ${index + 1}`}
                                                 src={image}
                                                 fill
+                                                sizes="(min-width: 1024px) 50vw, 100vw"
                                                 className="object-cover group-hover:opacity-90 transition-opacity duration-200"
                                                 priority={index === 0}
                                             />

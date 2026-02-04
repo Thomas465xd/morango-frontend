@@ -15,9 +15,10 @@ import {
 import { Fragment, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import Swal, { SweetAlertTheme } from 'sweetalert2';
+import Swal from 'sweetalert2';
 import Dialog from '@/components/ui/Dialog';
 import { formatToCLP } from '@/src/utils/price';
+import { useThemeForModal } from '@/src/hooks/useTheme';
 import { copyToClipboard } from '@/src/utils/copy';
 import { capitalizeFirstLetter } from '@/src/utils/text';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -110,6 +111,7 @@ const isStatusTransitionValid = (fromStatus: OrderStatus, toStatus: OrderStatus)
 export default function OrderEntry({ order }: OrderEntryProps) {
     const [expandedRow, setExpandedRow] = useState(false);
     const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+    const theme = useThemeForModal();
 
     const router = useRouter();
     const queryClient = useQueryClient(); 
@@ -144,7 +146,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
                 icon: "success",
                 timer: 1000,
                 showConfirmButton: false,
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             });
         }
     })
@@ -163,7 +165,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
                 icon: "success",
                 timer: 1000,
                 showConfirmButton: false,
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             });
         }
     })
@@ -188,7 +190,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, Actualizar",
             cancelButtonText: "Cancelar",
-            theme: localStorage.getItem("theme") as SweetAlertTheme || "light"
+            theme: theme
         }).then((result) => {
             if (result.isConfirmed) {
                 // If status is "Entregado", prompt for deliveredAt date
@@ -231,7 +233,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
             cancelButtonColor: "#d33",
             confirmButtonText: "Confirmar",
             cancelButtonText: "Cancelar",
-            theme: localStorage.getItem("theme") as SweetAlertTheme || "light",
+            theme: theme,
             didOpen: (modal) => {
                 const input = modal.querySelector("#deliveredAt") as HTMLInputElement;
                 if (input) {
@@ -256,7 +258,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
                     text: "La orden ha sido marcada como entregada",
                     timer: 1000,
                     showConfirmButton: false, 
-                    theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                    theme: theme,
                 });
 
                 updateStatusMutation({
@@ -289,7 +291,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Sí, eliminar",
                 cancelButtonText: "Cancelar",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     deleteOrderMutation(id)
@@ -321,7 +323,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Sí, archivar",
                 cancelButtonText: "Cancelar",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     archiveOrderMutation(id)
@@ -496,6 +498,7 @@ export default function OrderEntry({ order }: OrderEntryProps) {
                                                         src={item.productImage}
                                                         alt={item.productName}
                                                         fill
+                                                        sizes="48px"
                                                         className="object-cover"
                                                     />
                                                 </div>

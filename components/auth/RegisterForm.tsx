@@ -4,11 +4,13 @@ import { RegisterUserForm } from "@/src/types";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
 import ErrorMessage from "../ui/ErrorMessage";
 import { useRouter } from "next/navigation";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 export default function RegisterForm() {
+    const theme = useThemeForModal();
     const initialValues : RegisterUserForm = {
         name: "", 
         surname: "", 
@@ -35,7 +37,7 @@ export default function RegisterForm() {
                 title: "Hemos enviado un email de verificación 📥🧑‍💼",
                 text: "Confirma tu cuenta para completar tu registro en Morango Joyas",
                 icon: "info",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`
+                theme: theme
             }).then(() => {
                 router.push(`/auth/pending?email=${data.user.email}`);
             })

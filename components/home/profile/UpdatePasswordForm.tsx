@@ -5,15 +5,17 @@ import { UpdateUserPasswordForm } from "@/src/types"
 import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import Swal, { SweetAlertTheme } from "sweetalert2"
+import Swal from "sweetalert2"
 import { Eye, EyeOff, Lock, AlertCircle, Check } from "lucide-react"
 import { useState } from "react"
 import Divider from "@/components/ui/Divider";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 export default function UpdatePasswordForm() {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const theme = useThemeForModal();
 
     const initialValues: UpdateUserPasswordForm = {
         current_password: "",
@@ -53,7 +55,7 @@ export default function UpdatePasswordForm() {
             cancelButtonColor: "#d33",
             confirmButtonText: "Sí, Cambiar",
             cancelButtonText: "Cancelar",
-            theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+            theme: theme,
         }).then((result) => {
             if (result.isConfirmed) {
                 mutate(formData);

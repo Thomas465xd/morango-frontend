@@ -89,7 +89,7 @@ export default function DesktopNav({ open, onToggleMobileMenu, onToggleIsSeconda
         return () => {
             window.removeEventListener('scroll', throttledHandleScroll);
         };
-    }, []);
+    }, [onToggleIsSecondarySticky]);
 
     return (
         <>

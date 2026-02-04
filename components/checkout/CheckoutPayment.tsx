@@ -7,7 +7,8 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { memo, useMemo } from "react";
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 type CheckoutPaymentProps = {
     orderId: string; 
@@ -24,7 +25,8 @@ export function CheckoutPayment({
     initPoint, 
 }: CheckoutPaymentProps) {
 	const { theme } = useTheme();
-    const router = useRouter(); 
+    const router = useRouter();
+    const themeForModal = useThemeForModal(); 
 
     console.log("CheckoutPayment render");
 
@@ -165,7 +167,7 @@ export function CheckoutPayment({
                 html: 'Porfavor espera un momento mientras tu solicitud es procesada.',
                 allowOutsideClick: false, // Prevents closing by clicking outside
                 showConfirmButton: false,
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: themeForModal,
                 didOpen: () => {
                     Swal.showLoading();
                 },

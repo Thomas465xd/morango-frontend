@@ -5,15 +5,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
 import { Mail, Phone, MapPin, Save, AlertCircle, Check } from "lucide-react";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 type UpdateProfileFormProps = {
     user: User
 }
 
 export default function UpdateProfileForm({ user } : UpdateProfileFormProps) {
+    const theme = useThemeForModal();
     const initialValues : UpdateUserProfileForm = {
         name: user.name, 
         surname: user.surname, 
@@ -90,7 +92,7 @@ export default function UpdateProfileForm({ user } : UpdateProfileFormProps) {
             cancelButtonColor: "#d33",
             confirmButtonText: "Sí, Actualizar ✅",
             cancelButtonText: "No, Cancelar",
-            theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+            theme: theme,
         }).then((result) => {
             if (result.isConfirmed) {
                 if(formData.phone === "") {

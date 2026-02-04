@@ -16,7 +16,7 @@ export default function Header() {
 						alt="Hero background"
 						src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1920&h=1080&fit=crop"
 						fill
-						className="object-cover"
+						sizes="100vh"
 						priority
 					/>
 				</div>
@@ -111,11 +111,8 @@ export default function Header() {
 										alt={category.name}
 										src={category.imageSrc}
 										fill
-										className="object-cover group-hover:scale-110 transition-transform duration-300"
-									/>
-
-									{/* Overlay */}
-									<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+									    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
+                                    />
 
 									{/* Content */}
 									<div className="absolute inset-0 flex flex-col items-center justify-end p-4">
@@ -160,8 +157,7 @@ export default function Header() {
 										<Image
 											alt={collection.imageAlt}
 											src={collection.imageSrc}
-											fill
-											className="object-cover group-hover:scale-110 transition-transform duration-500"
+											fill										sizes="(min-width: 1024px) 33vw, 100vw"											className="object-cover group-hover:scale-110 transition-transform duration-500"
 										/>
 										<div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
 									</div>

@@ -6,12 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify";
 import ErrorMessage from "../ui/ErrorMessage";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
 import Loader from "../ui/Loader";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 export default function LoginForm() {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const theme = useThemeForModal();
 
     const initialValues : ResetPasswordForm = {
         password: "",
@@ -34,7 +36,7 @@ export default function LoginForm() {
                 icon: "success",
                 timer: 800, 
                 showConfirmButton: false, 
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then(() => {
                 router.push("/home");
             });

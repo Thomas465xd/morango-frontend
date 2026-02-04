@@ -187,7 +187,7 @@ export default function Footer({ auth = false } : FooterProps) {
 						<ul className="space-y-2 mb-6">
 							<li>
 								<Link
-									href="/auth/register"
+									href="/home/profile"
 									className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white transition duration-200 text-sm"
 								>
 									Mi Perfil
@@ -195,7 +195,7 @@ export default function Footer({ auth = false } : FooterProps) {
 							</li>
 							<li>
 								<Link
-									href="/auth/register"
+									href="/home/profile/orders"
 									className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white transition duration-200 text-sm"
 								>
 									Mis Ordenes

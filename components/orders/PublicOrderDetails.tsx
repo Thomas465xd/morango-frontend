@@ -81,6 +81,7 @@ export default function PublicOrderDetails({ order }: PublicOrderDetailsProps) {
                                             src={item.productImage}
                                             alt={item.productName}
                                             fill
+                                            sizes="80px"
                                             className="object-cover"
                                         />
                                     </div>

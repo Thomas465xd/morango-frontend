@@ -31,7 +31,7 @@ export default function AwaitingPayment({ orderId } : AwaitingPaymentProps) {
         if (paymentStatus === "rejected") {
             router.replace(`/checkout/failure/${orderId}?rejectionReason=${rejectionReason}`)
         }
-    }, [paymentStatus])
+    }, [paymentStatus, rejectionReason, orderId, router])
 
     if(error) return (
         <div className="

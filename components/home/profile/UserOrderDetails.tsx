@@ -156,6 +156,7 @@ export default function UserOrderDetails({ order }: UserOrderDetailsProps) {
                                                     src={item.productImage}
                                                     alt={item.productName}
                                                     fill
+                                                    sizes="(min-width: 640px) 96px, 80px"
                                                     className="object-cover group-hover:opacity-80 transition-opacity duration-200"
                                                 />
                                             </div>

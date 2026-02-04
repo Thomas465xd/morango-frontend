@@ -140,23 +140,22 @@ export default function About() {
 
 			{/* Image section */}
 			<div className="mt-32 sm:mt-40 xl:mx-auto xl:max-w-7xl xl:px-8">
-                <div className="relative aspect-5/2 w-full outline-1 -outline-offset-1 outline-black/5 xl:rounded-3xl dark:outline-white/10 overflow-hidden">
-                    <Image
-                        alt="Artesanía de Generaciones - Taller de joyería"
-                        src="https://images.unsplash.com/photo-1586878341523-7acb55eb8c12?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        fill
-                        className="object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60 dark:from-black/70 dark:via-black/50 dark:to-black/70 flex items-center justify-center">
-                        <div className="text-center">
-                            <h2 className="text-4xl font-bold text-white mb-4">Artesanía de Generaciones</h2>
-                            <p className="text-xl text-amber-50 max-w-2xl">Cada joya Morango representa años de experiencia, dedicación y amor por el arte de la orfebrería</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-			{/* Logo cloud */}
+			<div className="relative aspect-5/2 w-full outline-1 -outline-offset-1 outline-black/5 xl:rounded-3xl dark:outline-white/10 overflow-hidden">
+				<Image
+					alt="Artesanía de Generaciones - Taller de joyería"
+					src="https://images.unsplash.com/photo-1586878341523-7acb55eb8c12?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					fill
+					sizes="(min-width: 1280px) 1170px, (min-width: 1024px) 960px, 100vw"
+					className="object-cover"
+				/>
+				<div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60 dark:from-black/70 dark:via-black/50 dark:to-black/70 flex items-center justify-center">
+					<div className="text-center">
+						<h2 className="text-4xl font-bold text-white mb-4">Artesanía de Generaciones</h2>
+						<p className="text-xl text-amber-50 max-w-2xl">Cada joya Morango representa años de experiencia, dedicación y amor por el arte de la orfebrería</p>
+					</div>
+				</div>
+			</div>
+		</div>
 			<div className="relative isolate -z-10 mt-32 sm:mt-48">
 				<div className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden mask-[radial-gradient(50%_45%_at_50%_55%,white,transparent)]">
 					<svg

@@ -96,7 +96,7 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
 		},
 	});
 
-    const attributeDefaultsByType: Record<ProductTypes, Attributes> = {
+    const attributeDefaultsByType = useMemo(() : Record<ProductTypes, Attributes> => ({
         Anillo: {
             size: "",
             material: "",
@@ -121,7 +121,7 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
             backType: "",
             length: undefined,
         },
-    };
+    }), []); 
 
     const defaultProductType: ProductTypes = "Anillo";
 
@@ -183,7 +183,7 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
             // Ensure tags field is properly set
             setValue("tags", product.tags ?? [])
         }
-    }, [product, reset, setValue]);
+    }, [product, reset, setValue, attributeDefaultsByType]);
 
 	const selectedProductType = watch("productType");
 	const currentTags = watch("tags") || product?.tags || [];
@@ -202,7 +202,7 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
         }
 
         prevTypeRef.current = selectedProductType;
-    }, [selectedProductType, setValue]);
+    }, [selectedProductType, setValue, attributeDefaultsByType]);
 
     //& Cloudinary Image Uploads &//
 	useEffect(() => {

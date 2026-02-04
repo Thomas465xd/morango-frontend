@@ -61,7 +61,6 @@ export default function ProductsTable({
     isActive, 
     minPrice, 
     maxPrice, 
-    category, 
     tags, 
     productType, 
     search,

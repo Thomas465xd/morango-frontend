@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import {
@@ -73,32 +73,32 @@ export default function CreateProductForm() {
 		},
 	});
 
-    const attributeDefaultsByType: Record<ProductTypes, Attributes> = {
-        Anillo: {
-            size: "",
-            material: "",
-            gemstone: undefined,
-            carats: undefined,
-        },
-        Collar: {
-            length: "",
-            material: "",
-            claspType: undefined,
-            chainType: undefined,
-        },
-        Pulsera: {
-            length: "",
-            material: "",
-            claspType: undefined,
-            style: undefined,
-        },
-        Aros: {
-            type: "",
-            material: "",
-            backType: "",
-            length: undefined,
-        },
-    };
+	const attributeDefaultsByType = useMemo((): Record<ProductTypes, Attributes> => ({
+			Anillo: {
+				size: "",
+				material: "",
+				gemstone: undefined,
+				carats: undefined,
+			},
+			Collar: {
+				length: "",
+				material: "",
+				claspType: undefined,
+				chainType: undefined,
+			},
+			Pulsera: {
+				length: "",
+				material: "",
+				claspType: undefined,
+				style: undefined,
+			},
+			Aros: {
+				type: "",
+				material: "",
+				backType: "",
+				length: undefined,
+			},
+		}), []);
 
     const defaultProductType: ProductTypes = "Anillo";
 
@@ -136,7 +136,7 @@ export default function CreateProductForm() {
             shouldDirty: true,
             shouldTouch: true,
         });
-    }, [selectedProductType, setValue]);
+    }, [selectedProductType, setValue, attributeDefaultsByType]);
 
 	useEffect(() => {
 		register("images", {

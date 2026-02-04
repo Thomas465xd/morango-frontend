@@ -7,10 +7,11 @@ import { formatToCLP } from '@/src/utils/price';
 import { copyToClipboard } from '@/src/utils/copy';
 import Dialog from '@/components/ui/Dialog';
 import { Fragment } from 'react';
-import Swal, { SweetAlertTheme } from 'sweetalert2';
+import Swal from 'sweetalert2';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { processRefund } from '@/src/api/PaymentAPI';
 import { toast } from 'react-toastify';
+import { useThemeForModal } from '@/src/hooks/useTheme';
 
 type PaymentEntryProps = {
     payment: Payment
@@ -54,6 +55,7 @@ const statusBgColors: Record<PaymentStatus, string> = {
 
 export default function PaymentEntry({ payment }: PaymentEntryProps) {
     const [expandedRow, setExpandedRow] = useState(false);
+    const theme = useThemeForModal();
     const router = useRouter();
     const queryClient = useQueryClient();
 
@@ -96,7 +98,7 @@ export default function PaymentEntry({ payment }: PaymentEntryProps) {
                 icon: "success",
                 timer: 2000,
                 showConfirmButton: false,
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             });
         },
     });
@@ -126,7 +128,7 @@ export default function PaymentEntry({ payment }: PaymentEntryProps) {
                 icon: "warning",
                 confirmButtonColor: "#3085d6",
                 confirmButtonText: "Entendido",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             });
             return;
         }
@@ -160,7 +162,7 @@ export default function PaymentEntry({ payment }: PaymentEntryProps) {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Sí, Reembolsar",
                 cancelButtonText: "Cancelar",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then((result) => {
                 if (result.isConfirmed) {
                     refundMutation(payment.id!);

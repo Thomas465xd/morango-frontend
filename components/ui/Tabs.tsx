@@ -9,7 +9,8 @@ import {
     ChevronRightIcon
 } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 
 type Tab = {
     name: string, 
@@ -35,6 +36,11 @@ export default function Tabs({ tabs } : TabsProps) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const checkScroll = () => {
         const container = scrollContainerRef.current;
@@ -70,7 +76,7 @@ export default function Tabs({ tabs } : TabsProps) {
         setTimeout(checkScroll, 300);
     };
 
-    const scrollToActive = () => {
+    const scrollToActive = useCallback(() => {
         const container = scrollContainerRef.current;
         const activeTab = container?.querySelector('[aria-current="page"]');
 
@@ -89,11 +95,11 @@ export default function Tabs({ tabs } : TabsProps) {
 
             setTimeout(checkScroll, 100);
         }
-    };
+    }, []);
 
     useEffect(() => {
         scrollToActive();
-    }, [currentPathname]);
+    }, [scrollToActive, currentPathname]);
 
 	return (
 		<div>
@@ -123,7 +129,7 @@ export default function Tabs({ tabs } : TabsProps) {
                         >
                             {tabs.map((tab) => {
                                 const IconComponent = iconMap[tab.icon as keyof typeof iconMap];
-                                const isActive = currentPathname === tab.href;
+                                const isActive = isMounted && currentPathname === tab.href;
 
                                 return (
                                     <a
@@ -179,13 +185,14 @@ export default function Tabs({ tabs } : TabsProps) {
 					<nav aria-label="Tabs" className="-mb-px flex space-x-8">
 						{tabs.map((tab) => {
 							const IconComponent = iconMap[tab.icon as keyof typeof iconMap];
+							const isActive = isMounted && currentPathname === tab.href;
 							return (
-								<a
+								<Link
 									key={tab.name}
 									href={tab.href}
-									aria-current={currentPathname === tab.href ? "page" : undefined}
+									aria-current={isActive ? "page" : undefined}
 									className={`
-										${currentPathname === tab.href
+										${isActive
 											? "border-orange-500 text-orange-600 dark:border-orange-400 dark:text-orange-400"
 											: "border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700 dark:text-zinc-400 dark:hover:border-white/20 dark:hover:text-zinc-300"
 										}
@@ -196,7 +203,7 @@ export default function Tabs({ tabs } : TabsProps) {
 										<IconComponent
 											aria-hidden="true"
 											className={`
-												${currentPathname === tab.href
+												${isActive
 													? "text-orange-500 dark:text-orange-400"
 													: "text-zinc-400 group-hover:text-zinc-500 dark:text-zinc-500 dark:group-hover:text-zinc-400"
 												}
@@ -205,7 +212,7 @@ export default function Tabs({ tabs } : TabsProps) {
 										/>
 									)}
 									<span>{tab.name}</span>
-								</a>
+								</Link>
 							);
 						})}
 					</nav>

@@ -7,7 +7,8 @@ import { navigation, User } from "@/src/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logout } from "@/src/api/AuthAPI";
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 type MobileMenuProps = {
 	open: boolean;
@@ -27,7 +28,8 @@ export default function MobileNav({
 } : MobileMenuProps) {
     const currentPath = usePathname(); 
     const router = useRouter(); 
-    const queryClient = useQueryClient(); 
+    const queryClient = useQueryClient();
+    const theme = useThemeForModal(); 
 
     const { mutate, isPending } = useMutation({
         mutationFn: logout, 
@@ -43,7 +45,7 @@ export default function MobileNav({
                 timer: 800,
                 showConfirmButton: false,
                 icon: "success",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then(() => {
                 router.replace("/home"); // replace avoids history issues
             })

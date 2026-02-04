@@ -8,7 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 type UserDropdownProps = {
     user: User
@@ -18,6 +19,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
     const [isOpen, setIsOpen] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const theme = useThemeForModal();
 
     const router = useRouter(); 
 
@@ -59,7 +61,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
                 timer: 800,
                 showConfirmButton: false,
                 icon: "success",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then(() => {
                 router.replace("/home"); // replace avoids history issues
             })

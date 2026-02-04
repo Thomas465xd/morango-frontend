@@ -4,9 +4,10 @@ import { Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser"
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+// import { useEffect } from "react";
+// import { useSearchParams } from "next/navigation";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 type ContactForm = {
 	firstName: string;
@@ -18,7 +19,8 @@ type ContactForm = {
 }
 
 export default function ContactForm() {
-    const searchParams = useSearchParams();
+    const theme = useThemeForModal();
+    // const searchParams = useSearchParams();
     
     const initialValues : ContactForm = {
         firstName: "", 
@@ -33,8 +35,8 @@ export default function ContactForm() {
         register,
 		handleSubmit,
 		formState: { errors },
-		setValue,
-		watch,
+		// setValue,
+		// watch,
 		reset, 
     } = useForm<ContactForm>({defaultValues: initialValues});
 
@@ -82,12 +84,12 @@ export default function ContactForm() {
             setIsSubmitting(false)
             reset()
             toast.success("Mensaje enviado correctamente", {
-                theme: localStorage.getItem("theme") as "light" | "dark" | "auto"
+                theme: theme
             });
         } catch (error) {
             console.error(error)
             toast.error("Error al Enviar el Formulario", {
-                theme: localStorage.getItem("theme") as "light" | "dark" | "auto"
+                theme: theme
             });
             setIsSubmitting(false)
             return

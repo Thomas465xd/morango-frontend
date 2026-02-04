@@ -11,7 +11,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { toast } from "react-toastify";
-import Swal, { SweetAlertTheme } from "sweetalert2";
+import Swal from "sweetalert2";
+import { useThemeForModal } from "@/src/hooks/useTheme";
 
 type ProductEntryProps = {
     product: EnrichedProduct
@@ -102,6 +103,7 @@ export default function ProductEntry({ product } : ProductEntryProps) {
 	const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>(
 		{}
 	);
+    const theme = useThemeForModal();
 
     const router = useRouter(); 
     const queryClient = useQueryClient(); 
@@ -135,7 +137,7 @@ export default function ProductEntry({ product } : ProductEntryProps) {
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Sí, eliminar",
                 cancelButtonText: "Cancelar",
-                theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                theme: theme,
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     mutate(id)
@@ -143,7 +145,7 @@ export default function ProductEntry({ product } : ProductEntryProps) {
                         title: "¡Eliminado!",
                         text: "El producto ha sido eliminado.",
                         icon: "success",
-                        theme: `${localStorage.getItem("theme") as SweetAlertTheme}`,
+                        theme: theme,
                     });
                 }
             });

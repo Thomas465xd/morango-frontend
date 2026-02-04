@@ -30,7 +30,7 @@ export default function PaymentSuccess({ orderId } : PaymentSuccessProps) {
             clearCart();
             closeCart(); 
         }
-    }, [paymentStatus, clearCart]);
+    }, [paymentStatus, clearCart, closeCart]);
 
 
     if(isFetching) return (
