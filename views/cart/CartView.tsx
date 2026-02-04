@@ -1,6 +1,6 @@
 "use client"; 
 import CartDetails from "@/components/home/cart/CartDetails";
-import Loader from "@/components/ui/Loader";
+import CartDetailsSkeleton from "@/components/skeletons/CartDetailsSkeleton";
 import { getProductsByIds } from "@/src/api/ProductAPI";
 import { useCartStore } from "@/src/store/useCartStore";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ export default function CartView() {
     const productIds = items.map(item => item.productId); 
 
     // Make query to retrieve cart products
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ["products", productIds],
         queryFn: () => getProductsByIds(productIds),
         retry: false, 
@@ -37,8 +37,7 @@ export default function CartView() {
     const freeShippingCostLeft = Math.max(0, 90000 - total);
     const freeShipping = freeShippingCostLeft <= 0 ? true : false
 
-    // TODO: Add cart page skeleton loader
-    if (isLoading) return <Loader />
+    if (isLoading) return <CartDetailsSkeleton />
 
 	if (products.length === 0) {
 		return (
