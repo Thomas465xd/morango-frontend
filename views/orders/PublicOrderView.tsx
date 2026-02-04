@@ -1,7 +1,7 @@
 "use client"; 
 import PublicOrderDetails from "@/components/orders/PublicOrderDetails";
+import PublicOrderDetailsSkeleton from "@/components/skeletons/PublicOrderDetailsSkeleton";
 import ErrorCard from "@/components/ui/ErrorCard";
-import Loader from "@/components/ui/Loader";
 import { getOrderByNumber } from "@/src/api/OrderAPI";
 import { useQuery } from "@tanstack/react-query";
 import { PackageX } from "lucide-react";
@@ -21,9 +21,8 @@ export default function PublicOrderView({ trackingNumber } :  PublicOrderViewPro
 
     const order = useMemo(() => data, [data]);
 
-    // TODO: Add public order tracking section skeleton loader
     if(isLoading) {
-        return <Loader />
+        return <PublicOrderDetailsSkeleton />
     }
 
     if(isError) {
