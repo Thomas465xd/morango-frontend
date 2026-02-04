@@ -1,5 +1,4 @@
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
-import NewCodeForm from "@/components/auth/NewCodeForm";
 import Logo from "@/components/ui/Logo";
 import { House } from "lucide-react";
 import Link from "next/link";

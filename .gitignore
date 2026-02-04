@@ -42,4 +42,5 @@ next-env.d.ts
 
 # other 
 /components/ui/tailwind-ui
+/components/ui/_tailwind-ui
 

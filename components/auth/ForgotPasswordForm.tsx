@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import ErrorMessage from "../ui/ErrorMessage";
 import { useTimer } from "@/src/hooks/useTimer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type ForgotPasswordFormData = {
     email: string; 
@@ -15,14 +15,18 @@ const COOLDOWN_MS = 30_000;
 const STORAGE_KEY = "resend_code_cooldown";
 
 export default function ForgotPasswordForm() {
+    const [expiresAt, setExpiresAt] = useState<number | undefined>(undefined);
+    
     const initialValues : ForgotPasswordFormData = {
         email: ""
     }
 
-    const [expiresAt, setExpiresAt] = useState<number | undefined>(() => {
+    useEffect(() => {
         const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? Number(stored) : undefined;
-    });
+        if (stored) {
+            setExpiresAt(Number(stored));
+        }
+    }, []);
 
     const { timeRemaining, isExpired } = useTimer(expiresAt);
 
