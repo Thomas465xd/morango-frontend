@@ -38,6 +38,7 @@ const siteConfig = {
 	type: "website",
 };
 
+//* This actually sets ups Next metadata
 export const metadata: Metadata = {
 	title: {
         template: `%s | ${siteConfig.name}`,
@@ -68,7 +69,7 @@ export default function RootLayout({
                 <meta name="msapplication-TileColor" content="#ffffff" />
 
                 {/* Preload Critical Resources */}
-                <link rel="preload" as="image" href="/logo.svg" type="image/svg+xml"/>
+                {/* <link rel="preload" as="image" href="/logo.svg" type="image/svg+xml"/> */}
 
                 {/* Security Headers */}
                 <meta name="referrer" content="origin-when-cross-origin" />

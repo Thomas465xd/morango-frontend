@@ -23,6 +23,26 @@ const nextConfig : NextConfig = {
 			},
 		],
 	},
+    // Prevent dynamic routes from catching static asset files
+    redirects: async () => {
+        return [
+            {
+                source: "/home/products/:path*.css.map",
+                destination: "/:path*.css.map",
+                permanent: true,
+            },
+            {
+                source: "/home/products/:path*.svg",
+                destination: "/:path*.svg",
+                permanent: true,
+            },
+            {
+                source: "/home/products/:path*.json",
+                destination: "/:path*.json",
+                permanent: true,
+            },
+        ];
+    },
 };
 
 export default nextConfig;
