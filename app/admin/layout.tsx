@@ -1,4 +1,5 @@
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import Footer from "@/components/ui/Footer";
