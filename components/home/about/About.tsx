@@ -140,6 +140,7 @@ export default function About() {
 
 			{/* Image section */}
 			<div className="mt-32 sm:mt-40 xl:mx-auto xl:max-w-7xl xl:px-8">
+                
 			<div className="relative aspect-5/2 w-full outline-1 -outline-offset-1 outline-black/5 xl:rounded-3xl dark:outline-white/10 overflow-hidden">
 				<Image
 					alt="Artesanía de Generaciones - Taller de joyería"
@@ -150,7 +151,7 @@ export default function About() {
 				/>
 				<div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60 dark:from-black/70 dark:via-black/50 dark:to-black/70 flex items-center justify-center">
 					<div className="text-center">
-						<h2 className="text-4xl font-bold text-white mb-4">Artesanía de Generaciones</h2>
+						<h2 className="text-3xl xl:text-4xl font-bold text-white mb-4">Artesanía de Generaciones</h2>
 						<p className="text-xl text-amber-50 max-w-2xl">Cada joya Morango representa años de experiencia, dedicación y amor por el arte de la orfebrería</p>
 					</div>
 				</div>

@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import Footer from "@/components/ui/Footer";
 import { cookies } from "next/headers";

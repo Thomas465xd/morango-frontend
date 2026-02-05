@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import Tabs from "@/components/ui/Tabs";
 import { profileTabs } from "@/src/types";
 import { cookies } from "next/headers";

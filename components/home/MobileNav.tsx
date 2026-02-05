@@ -18,7 +18,7 @@ type MobileMenuProps = {
     user?: User;
 };
 
-
+// TODO: Fix spacing for lower left bottom routes (iniciar sesión and cerrar sesión do not appear on mobile)
 export default function MobileNav({
 	open,
 	onToggle,
@@ -107,7 +107,7 @@ export default function MobileNav({
 
 				{/* Auth */}
                 {!user ? (
-                    <div className="space-y-4 mt-auto">
+                    <div className="space-y-4 mt-auto mb-8">
                         <Link
                             href="/auth/register"
                             onClick={onToggle}
@@ -126,7 +126,7 @@ export default function MobileNav({
                         </Link>
                     </div>
                 ) : (
-                    <div className="space-y-4 mt-auto">
+                    <div className="space-y-2">
                         <div className="px-4 py-3">
                             <p className="text-sm text-gray-400">
                                 Sesión iniciada como
