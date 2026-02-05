@@ -1,76 +1,41 @@
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+"use client";
 
 import Tabs from "@/components/ui/Tabs";
 import { profileTabs } from "@/src/types";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useAuth } from "@/src/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { ReactNode } from "react";
 
-async function getCurrentUser() {
-    try {
-        const cookieStore = await cookies();
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
-
-        if (!backendUrl) {
-            console.error("❌ NEXT_PUBLIC_BACKEND_API_URL is not set");
-            return null;
-        }
-
-        const url = `${backendUrl}/auth/user`;
-        console.log("🔄 Fetching user from:", url);
-        
-        const cookieList = cookieStore.getAll();
-        console.log("🍪 Cookies being sent:", cookieList.map(c => c.name).join(", "));
-
-        const res = await fetch(url, {
-            headers: {
-                Cookie: cookieStore.toString(),
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            cache: "no-store",
-            signal: AbortSignal.timeout(10000), // 10 second timeout
-        });
-
-        console.log("📊 Response status:", res.status, res.statusText);
-
-        if (!res.ok) {
-            console.error(`❌ Failed to fetch user: ${res.status} ${res.statusText}`);
-            return null;
-        }
-
-        // Prevent JSON parse crash
-        const text = await res.text();
-        console.log("📝 Response body length:", text.length, "chars");
-        console.log("📝 Response body:", text.substring(0, 200)); // First 200 chars
-        
-        if (!text) {
-            console.warn("⚠️ Empty response from backend");
-            return null;
-        }
-
-        const user = JSON.parse(text);
-        console.log("✅ User fetched successfully:", user.email);
-        return user;
-    } catch (error) {
-        console.error("❌ Error fetching user:", error instanceof Error ? error.message : error);
-        if (error instanceof Error) {
-            console.error("Stack:", error.stack);
-        }
-        return null;
-    }
-}
-
-
-export default async function ProfileLayout({
+export default function ProfileLayout({
     children,
 }: Readonly<{
     children: ReactNode;
 }>) {
-    const user = await getCurrentUser();
+    const router = useRouter();
+    const { user, isLoading, isError } = useAuth();
 
-    if (!user) redirect("/auth/login");
+    useEffect(() => {
+        if (isLoading) return; // Still checking auth
+
+        // Not authenticated or error
+        if (!user) {
+            router.push("/auth/login");
+            return;
+        }
+    }, [user, isLoading, isError, router]);
+
+    // Show nothing while loading or redirecting
+    if (isLoading || !user) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-zinc-50 dark:bg-stone-900">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
+                    <p className="text-zinc-600 dark:text-zinc-300">Verificando autenticación...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="p-3 sm:p-8">
