@@ -1,9 +1,13 @@
 "use client";
 
-import { XCircle, House, Mail, AlertCircle } from "lucide-react";
+import { XCircle, House, Mail, AlertCircle, Package } from "lucide-react";
 import Link from "next/link";
 
-export default function PaymentFailureWallet() {
+type PaymentFailureWalletProps = {
+    trackingNumber?: string;
+};
+
+export default function PaymentFailureWallet({ trackingNumber }: PaymentFailureWalletProps) {
     return (
         <main className="flex items-center justify-center min-h-screen px-4 my-12">
             <div className="
@@ -92,7 +96,16 @@ export default function PaymentFailureWallet() {
 
                 {/* Footer */}
                 <div className="border-t border-zinc-200 dark:border-zinc-700 px-6 py-4 bg-zinc-50 dark:bg-zinc-700/30">
-                    <div className="flex-center">
+                    <div className="flex flex-col items-center gap-3">
+                        {trackingNumber && (
+                            <Link 
+                                className="button flex items-center gap-2 tracking-widest uppercase text-sm" 
+                                href={`/home/orders/public/${trackingNumber}`}
+                            >
+                                <Package size={16} />
+                                Ver Orden
+                            </Link>
+                        )}
                         <Link 
                             className="link flex items-center gap-2" 
                             href="/home"

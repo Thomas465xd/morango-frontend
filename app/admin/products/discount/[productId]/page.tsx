@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     title: "Configurar Descuentos"
 }
 
+// TODO: implement generateStaticParams() with react query for faster page loads
+
 type DiscountParams = {
     params: Promise<{ productId: string }>, 
     searchParams: { [key: string]: string | string[] | undefined }

@@ -6,6 +6,16 @@ export const metadata: Metadata = {
     description: "Tu pago no fue procesado. Revisa tu correo para más información.",
 };
 
-export default function FailurePage() {
-    return <PaymentFailureWallet />;
+type FailurePageProps = {
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function FailurePage({ searchParams }: FailurePageProps) {
+    const params = await searchParams;
+    
+    const trackingNumber = typeof params.external_reference === "string" 
+        ? params.external_reference 
+        : undefined;
+
+    return <PaymentFailureWallet trackingNumber={trackingNumber} />;
 }

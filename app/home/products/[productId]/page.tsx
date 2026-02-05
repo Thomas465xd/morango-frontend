@@ -59,6 +59,8 @@ export async function generateMetadata({
 	}
 }
 
+// TODO: implement generateStaticParams() with react query for faster page loads
+
 export default async function page({
 	params,
 }: {

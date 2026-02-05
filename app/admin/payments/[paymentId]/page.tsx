@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     title: "Detalles pago"
 }
 
+// TODO: implement generateStaticParams() with react query for faster page loads
+
 export default async function page({ params } : { params: Promise<{ paymentId: string }>}) {
     const { paymentId } = await params; 
 

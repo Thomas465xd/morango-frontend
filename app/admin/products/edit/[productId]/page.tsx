@@ -7,6 +7,8 @@ export const metadata: Metadata = {
     title: "Editar Producto"
 }
 
+// TODO: implement generateStaticParams() with react query for faster page loads
+
 export default async function page({ params } : { params: Promise<{ productId: string }>}) {
     const { productId } = await params; 
 
