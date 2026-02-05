@@ -19,18 +19,21 @@ async function getCurrentUser() {
 
         const url = `${backendUrl}/auth/user`;
         console.log("🔄 Fetching user from:", url);
+        
+        const cookieList = cookieStore.getAll();
+        console.log("🍪 Cookies being sent:", cookieList.map(c => c.name).join(", "));
 
         const res = await fetch(url, {
             headers: {
-                Cookie: cookieStore.getAll()
-                    .map(c => `${c.name}=${c.value}`)
-                    .join("; "),
+                Cookie: cookieStore.toString(),
                 "Content-Type": "application/json",
             },
             credentials: "include",
             cache: "no-store",
             signal: AbortSignal.timeout(10000), // 10 second timeout
         });
+
+        console.log("📊 Response status:", res.status, res.statusText);
 
         if (!res.ok) {
             console.error(`❌ Failed to fetch user: ${res.status} ${res.statusText}`);
@@ -39,6 +42,9 @@ async function getCurrentUser() {
 
         // Prevent JSON parse crash
         const text = await res.text();
+        console.log("📝 Response body length:", text.length, "chars");
+        console.log("📝 Response body:", text.substring(0, 200)); // First 200 chars
+        
         if (!text) {
             console.warn("⚠️ Empty response from backend");
             return null;
@@ -49,6 +55,9 @@ async function getCurrentUser() {
         return user;
     } catch (error) {
         console.error("❌ Error fetching user:", error instanceof Error ? error.message : error);
+        if (error instanceof Error) {
+            console.error("Stack:", error.stack);
+        }
         return null;
     }
 }
