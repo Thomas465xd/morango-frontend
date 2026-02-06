@@ -161,10 +161,10 @@ export default function Footer({ auth = false } : FooterProps) {
 							</li>
                             <li>
 								<Link
-									href="/home/services"
+									href="/home/cart"
 									className="text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-white transition duration-200 text-sm"
 								>
-									Nuestros Servicios
+									Carrito de Compras
 								</Link>
 							</li>
                             <li>

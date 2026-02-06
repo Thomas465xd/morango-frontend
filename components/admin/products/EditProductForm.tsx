@@ -158,17 +158,23 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
         if (product && !didInitRef.current) {
             didInitRef.current = true
 
+            // Merge loaded attributes with type defaults to ensure all fields exist
+            const mergedAttributes = {
+                ...attributeDefaultsByType[product.productType ?? defaultProductType],
+                ...product.attributes,
+            };
+
 			const formData : ProductForm = {
 				name: product.name ?? "",
 				description: product.description ?? "",
                 basePrice: product.basePrice ?? 0,
-				productType: product.productType ?? defaultProductType, // Cast to correct union type
+				productType: product.productType ?? defaultProductType,
 				images: product.images ?? [],
                 stock: product.stock ?? 0, 
                 category: product.category ?? "", 
                 tags: product.tags ?? [], 
                 isActive: product.isActive ?? true, 
-                attributes: product.attributes ?? attributeDefaultsByType[product.productType ?? defaultProductType]
+                attributes: mergedAttributes
 			};
 			
 			// Reset form with new data
@@ -190,19 +196,36 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
 
     const prevTypeRef = useRef<ProductTypes | null>(null);
 
+    // Only reset optional attributes when type changes, preserve required ones
     useEffect(() => {
         if (
             prevTypeRef.current &&
-            prevTypeRef.current !== selectedProductType
+            prevTypeRef.current !== selectedProductType &&
+            didInitRef.current
         ) {
+            // Merge defaults (which includes optional fields) with existing attributes
+            // but only keep required fields from the type defaults
+            const currentAttributes = watch("attributes");
+            const newTypeDefaults = attributeDefaultsByType[selectedProductType];
+            
+            // Merge: keep user input for overlapping fields, fill defaults for new fields
+            const mergedAttributes = {
+                ...newTypeDefaults,
+                ...Object.fromEntries(
+                    Object.entries(currentAttributes ?? {}).filter(
+                        ([key]) => key in newTypeDefaults
+                    )
+                ),
+            };
+            
             setValue(
                 "attributes",
-                attributeDefaultsByType[selectedProductType]
+                mergedAttributes as Attributes
             );
         }
 
         prevTypeRef.current = selectedProductType;
-    }, [selectedProductType, setValue, attributeDefaultsByType]);
+    }, [selectedProductType, setValue, attributeDefaultsByType, watch]);
 
     //& Cloudinary Image Uploads &//
 	useEffect(() => {
@@ -377,7 +400,9 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
 								Largo <span className="text-red-500">*</span>
 							</label>
 							<input
-								{...register("attributes.length")}
+								{...register("attributes.length", {
+                                    required: "El largo no puede ir vacío"
+                                })}
 								type="text"
 								placeholder="40cm, 50cm..."
 								className="input-admin"
@@ -393,7 +418,9 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
 								Material <span className="text-red-500">*</span>
 							</label>
 							<input
-								{...register("attributes.material")}
+								{...register("attributes.material", {
+                                    required: "El material no puede ir vacío"
+                                })}
 								type="text"
 								placeholder="Oro, Plata..."
 								className="input-admin"
