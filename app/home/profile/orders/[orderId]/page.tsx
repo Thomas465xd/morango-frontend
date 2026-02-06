@@ -2,7 +2,8 @@ import UserOrderDetailsView from '@/views/profile/UserOrderDetailsView';
 import { Metadata } from 'next';
 
 export const metadata : Metadata = {
-    title: "Detalles de la orden"
+    title: "Detalles de la Orden",
+    description: "Visualiza los detalles completos de tu orden, incluyendo productos, precios y estado de envío."
 }
 
 export default async function page({ params } : { params: Promise<{ orderId: string }>}) {

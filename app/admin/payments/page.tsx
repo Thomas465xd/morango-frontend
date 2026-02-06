@@ -2,7 +2,8 @@ import AdminPaymentsView from "@/views/admin/AdminPaymentsView"
 import { Metadata } from "next"
 
 export const metadata : Metadata = {
-    title: "Administrar Ordenes"
+    title: "Administrar Pagos",
+    description: "Visualiza y gestiona todos los pagos realizados por los clientes en Morango Joyas."
 }
 
 export default function page() {

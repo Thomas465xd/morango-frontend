@@ -17,7 +17,7 @@ export default function Header() {
 						src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1920&h=1080&fit=crop"
 						fill
 						sizes="100vh"
-						priority
+						fetchPriority="high"
 					/>
 				</div>
 

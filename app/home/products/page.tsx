@@ -3,7 +3,8 @@ import { Metadata } from "next"
 import Image from "next/image"
 
 export const metadata: Metadata = {
-    title: "Nuestas Joyas"
+    title: "Nuestras Joyas",
+    description: "Explora nuestra amplia colección de joyas exclusivas, anillos, collares, pulseras y más. Encuentra el regalo perfecto."
 }
 
 export default function page() {

@@ -1,5 +1,11 @@
 import RegisterForm from "@/components/auth/RegisterForm";
+import { Metadata } from "next";
 import Logo from "@/components/ui/Logo";
+
+export const metadata: Metadata = {
+    title: "Crear Cuenta",
+    description: "Regístrate en Morango Joyas para comenzar a comprar nuestras joyas exclusivas."
+};
 import { House } from "lucide-react";
 import Link from "next/link";
 

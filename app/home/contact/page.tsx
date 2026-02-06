@@ -3,7 +3,8 @@ import ContactInformation from "@/components/home/contact/ContactInformation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Contacto"
+    title: "Contacto",
+    description: "Contáctanos para consultas, sugerencias o cualquier duda sobre nuestros productos y servicios."
 }
 
 export default function page() {

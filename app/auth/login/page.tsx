@@ -1,7 +1,13 @@
+import { Metadata } from "next";
 import LoginForm from "@/components/auth/LoginForm";
 import Logo from "@/components/ui/Logo";
 import { House } from "lucide-react";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+    title: "Inicia Sesión",
+    description: "Inicia sesión en tu cuenta de Morango Joyas para ver tus órdenes y pagos."
+};
 
 export default function page() {
     return (

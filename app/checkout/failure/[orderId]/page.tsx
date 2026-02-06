@@ -2,7 +2,8 @@ import PaymentFailure from "@/components/payment/PaymentFailure";
 import { Metadata } from "next";
 
 export const metadata : Metadata = {
-    title: "Pago Rechazado"
+    title: "Pago Rechazado",
+    description: "Hubo un problema al procesar tu pago. Por favor intenta nuevamente con otro método de pago."
 }
 
 type FailureParams = {

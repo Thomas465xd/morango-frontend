@@ -2,7 +2,8 @@ import PublicOrderView from '@/views/orders/PublicOrderView'
 import { Metadata } from 'next';
 
 export const metadata : Metadata = {
-    title: "Seguimiento de la orden"
+    title: "Seguimiento de la Orden",
+    description: "Rastrear el estado y ubicación actual de tu orden sin necesidad de iniciar sesión."
 }
 
 export default async function page({ params } : { params: Promise<{ trackingNumber: string }>}) {

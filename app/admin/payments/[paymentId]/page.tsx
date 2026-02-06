@@ -4,7 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Detalles pago"
+    title: "Detalles del Pago",
+    description: "Visualiza los detalles completos de una transacción de pago."
 }
 
 // TODO: implement generateStaticParams() with react query for faster page loads

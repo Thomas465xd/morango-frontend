@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
+
+export const metadata: Metadata = {
+    title: "Recuperar Contraseña",
+    description: "Recupera el acceso a tu cuenta de Morango ingresando tu correo electrónico."
+};
 import Logo from "@/components/ui/Logo";
 import { House } from "lucide-react";
 import Link from "next/link";

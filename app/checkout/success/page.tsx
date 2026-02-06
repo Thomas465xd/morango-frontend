@@ -2,7 +2,7 @@ import PaymentSuccessWallet from "@/components/payment/PaymentSuccessWallet";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Pago Exitoso | Morango",
+    title: "Pago Exitoso",
     description: "Tu pago ha sido procesado exitosamente. Revisa tu correo para los detalles de tu orden.",
 };
 

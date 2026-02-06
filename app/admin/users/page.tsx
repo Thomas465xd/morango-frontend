@@ -2,7 +2,8 @@ import AdminUsersView from "@/views/admin/AdminUsersView";
 import { Metadata } from "next";
 
 export const metadata : Metadata = {
-    title: "Administrar usuarios"
+    title: "Administrar Usuarios",
+    description: "Gestiona todos los usuarios registrados en Morango Joyas. Ve información y permisos."
 }
 
 export default function page() {

@@ -33,7 +33,7 @@ const siteConfig = {
 	title: "Morango Joyas",
 	description: "Encuentra las mejores joyas y accesorios.",
 	url: "https://www.morangojoyas.cl",
-	siteName: "TicketX",
+	siteName: "Morango Joyas",
 	locale: "es_CL",
 	type: "website",
 };

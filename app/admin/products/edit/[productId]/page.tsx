@@ -4,7 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Editar Producto"
+    title: "Editar Producto",
+    description: "Actualiza los detalles, precios y descripción de tu producto en Morango Joyas."
 }
 
 // TODO: implement generateStaticParams() with react query for faster page loads

@@ -4,7 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Productos"
+    title: "Administrar Productos",
+    description: "Gestiona el catálogo de productos de Morango Joyas. Añade, edita y elimina joyas."
 }
 
 export default function page() {

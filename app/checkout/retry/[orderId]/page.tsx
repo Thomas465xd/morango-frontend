@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
 	title: "Reintentar Pago",
+	description: "Intenta realizar el pago nuevamente para procesar tu orden en Morango Joyas."
 };
 
 type RetryPaymentParams = {

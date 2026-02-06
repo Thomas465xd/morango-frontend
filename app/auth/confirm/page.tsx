@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import ConfirmAccountForm from "@/components/auth/ConfirmAccountForm";
+
+export const metadata: Metadata = {
+    title: "Confirmar Cuenta",
+    description: "Confirma tu correo electrónico para completar el registro en Morango Joyas."
+};
 import Logo from "@/components/ui/Logo";
 import { House } from "lucide-react";
 import Link from "next/link";

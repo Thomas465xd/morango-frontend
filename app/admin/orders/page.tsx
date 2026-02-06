@@ -2,7 +2,8 @@ import AdminOrdersView from "@/views/admin/AdminOrdersView"
 import { Metadata } from "next"
 
 export const metadata : Metadata = {
-    title: "Administrar Ordenes"
+    title: "Administrar Órdenes",
+    description: "Gestiona todas las órdenes de los clientes. Controla estados, envíos y seguimiento."
 }
 
 export default function page() {

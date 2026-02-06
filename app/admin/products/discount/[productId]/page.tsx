@@ -6,7 +6,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Configurar Descuentos"
+    title: "Configurar Descuentos",
+    description: "Establece descuentos y promociones para tus productos de joyas."
 }
 
 // TODO: implement generateStaticParams() with react query for faster page loads
