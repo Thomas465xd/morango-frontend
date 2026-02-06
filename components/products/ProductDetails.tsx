@@ -1,6 +1,6 @@
 import { CreateOrderForm, EnrichedProduct } from "@/src/types";
-import { Disclosure, DisclosureButton, DisclosurePanel, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { MinusIcon, PlusIcon, Sparkles, Tag, ShoppingBag, Shield, Truck, Tags, Minus, Plus, Check, X, ZoomIn } from "lucide-react";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
+import { MinusIcon, PlusIcon, Sparkles, Tag, ShoppingBag, Shield, Truck, Tags, Minus, Plus, Check, X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import ProductCard from "./ProductCard";
 import { formatToCLP } from "@/src/utils/price";
@@ -9,7 +9,7 @@ import Breadcrumb from "../ui/Breadcrumb";
 import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "@/src/store/useCartStore";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createOrder } from "@/src/api/OrderAPI";
 
@@ -66,6 +66,8 @@ export default function ProductDetails({
 
     const [ quantity, setQuantity ] = useState<number>(1); 
     const [ zoomedImage, setZoomedImage ] = useState<string | null>(null);
+    const [ selectedImageIndex, setSelectedImageIndex ] = useState<number>(0);
+    const [ touchStartX, setTouchStartX ] = useState<number>(0);
 
     const queryClient = useQueryClient(); 
 
@@ -123,6 +125,43 @@ export default function ProductDetails({
         mutate(formData)
     }
 
+    // Handle swipe gestures on mobile
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchStartX(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const swipeDistance = touchStartX - touchEndX;
+        const minSwipeDistance = 30; // Minimum distance to register as swipe
+
+        if (Math.abs(swipeDistance) >= minSwipeDistance) {
+            if (swipeDistance > 0) {
+                // Swiped left - next image
+                setSelectedImageIndex((prev) => 
+                    prev < product.images.length - 1 ? prev + 1 : 0
+                );
+            } else {
+                // Swiped right - previous image
+                setSelectedImageIndex((prev) => 
+                    prev > 0 ? prev - 1 : product.images.length - 1
+                );
+            }
+        }
+    };
+
+    const handlePrevImage = () => {
+        setSelectedImageIndex((prev) => 
+            prev > 0 ? prev - 1 : product.images.length - 1
+        );
+    };
+
+    const handleNextImage = () => {
+        setSelectedImageIndex((prev) => 
+            prev < product.images.length - 1 ? prev + 1 : 0
+        );
+    };
+
 	return (
         <main className="mx-auto max-w-7xl sm:px-6 sm:pt-4 lg:px-8">
             <div className="mb-12">
@@ -136,22 +175,25 @@ export default function ProductDetails({
                 <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-12">
                     <div className="">
                         {/* Image gallery */}
-                        <TabGroup className="flex flex-col-reverse">
-                            {/* Image selector */}
-                            <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
-                                <TabList className="grid grid-cols-4 gap-6">
+                        <div className="flex flex-col-reverse">
+                            {/* Image selector - visible on all screen sizes */}
+                            <div className="mx-auto mt-6 w-full max-w-2xl lg:max-w-none">
+                                <div className="grid grid-cols-4 gap-3 sm:gap-6">
                                     {product.images.map((image, index) => (
-                                        <Tab
+                                        <button
                                             key={image}
-                                            className="
-                                                group relative h-24 cursor-pointer 
+                                            onClick={() => setSelectedImageIndex(index)}
+                                            className={`
+                                                relative h-20 sm:h-24 cursor-pointer 
                                                 flex-center rounded-lg bg-white dark:bg-zinc-800 
-                                                border-2 border-transparent hover:border-orange-300 dark:hover:border-orange-200 
-                                                transition-all duration-200 
+                                                border-2 transition-all duration-200 
                                                 overflow-hidden focus:outline-none 
-                                                data-[selected]:border-orange-300 dark:data-[selected]:border-orange-300 
-                                                data-[selected]:ring-2 data-[selected]:ring-orange-200/50
-                                            "
+                                                ${
+                                                    selectedImageIndex === index
+                                                        ? 'border-orange-300 dark:border-orange-300 ring-2 ring-orange-200/50'
+                                                        : 'border-transparent hover:border-orange-300 dark:hover:border-orange-200'
+                                                }
+                                            `}
                                         >
                                             <span className="sr-only">
                                                 Imagen {index + 1}
@@ -165,34 +207,63 @@ export default function ProductDetails({
                                                     className="object-cover"
                                                 />
                                             </span>
-                                        </Tab>
+                                        </button>
                                     ))}
-                                </TabList>
+                                </div>
                             </div>
 
-                            <TabPanels>
-                                {product.images.map((image, index) => (
-                                    <TabPanel key={image}>
-                                        <div 
-                                            onClick={() => setZoomedImage(image)}
-                                            className="relative aspect-square w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-900 cursor-zoom-in group"
-                                        >
-                                            <Image
-                                                alt={`${product.name} - Vista ${index + 1}`}
-                                                src={image}
-                                                fill
-                                                sizes="(min-width: 1024px) 50vw, 100vw"
-                                                className="object-cover group-hover:opacity-90 transition-opacity duration-200"
-                                                priority={index === 0}
+                            <div className="relative">
+                                {/* Main image display */}
+                                <div 
+                                    onTouchStart={handleTouchStart}
+                                    onTouchEnd={handleTouchEnd}
+                                    onClick={() => setZoomedImage(product.images[selectedImageIndex])}
+                                    className="relative aspect-square w-full overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-900 cursor-zoom-in group"
+                                >
+                                    <Image
+                                        alt={`${product.name} - Vista ${selectedImageIndex + 1}`}
+                                        src={product.images[selectedImageIndex]}
+                                        fill
+                                        sizes="(min-width: 1024px) 50vw, 100vw"
+                                        className="object-cover group-hover:opacity-90 transition-opacity duration-200"
+                                        priority
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/10">
+                                        <ZoomIn size={32} className="text-white" />
+                                    </div>
+                                </div>
+
+                                {/* Mobile swipe indicators and navigation arrows */}
+                                <div className="absolute bottom-4 left-0 right-0 flex items-center justify-between px-4 sm:hidden">
+                                    <button
+                                        onClick={handlePrevImage}
+                                        className="p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+                                        aria-label="Imagen anterior"
+                                    >
+                                        <ChevronLeft size={20} />
+                                    </button>
+                                    <div className="flex gap-2">
+                                        {product.images.map((_, index) => (
+                                            <div
+                                                key={index}
+                                                className={`h-1.5 rounded-full transition-all ${
+                                                    selectedImageIndex === index
+                                                        ? 'bg-white w-6'
+                                                        : 'bg-white/50 w-1.5'
+                                                }`}
                                             />
-                                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/10">
-                                                <ZoomIn size={32} className="text-white" />
-                                            </div>
-                                        </div>
-                                    </TabPanel>
-                                ))}
-                            </TabPanels>
-                        </TabGroup>
+                                        ))}
+                                    </div>
+                                    <button
+                                        onClick={handleNextImage}
+                                        className="p-2 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors"
+                                        aria-label="Siguiente imagen"
+                                    >
+                                        <ChevronRight size={20} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Product info */}
