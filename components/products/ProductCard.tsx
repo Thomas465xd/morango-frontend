@@ -2,7 +2,6 @@ import { useMobile } from '@/src/hooks/useMobile'
 import { useCartStore } from '@/src/store/useCartStore'
 import { EnrichedProduct } from '@/src/types'
 import { formatToCLP } from '@/src/utils/price'
-import { capitalizeFirstLetter } from '@/src/utils/text'
 import { Plus, Sparkles, Tag, TagsIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -184,7 +183,7 @@ export default function ProductCard({ product } : ProductCardProps) {
                 <h3 className="text-base font-semibold text-zinc-900 dark:text-orange-100 line-clamp-1 group-hover/card:text-orange-500 dark:group-hover/card:text-orange-300 transition-colors">
                     <Link href={`/home/products/${product.id}`}>
                         <span aria-hidden="true" className="absolute inset-0" />
-                        {capitalizeFirstLetter(product.name)}
+                        {product.name}
                     </Link>
                 </h3>
 

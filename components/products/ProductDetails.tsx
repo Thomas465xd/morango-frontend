@@ -4,12 +4,11 @@ import { MinusIcon, PlusIcon, Sparkles, Tag, ShoppingBag, Shield, Truck, Tags, M
 import Image from "next/image";
 import ProductCard from "./ProductCard";
 import { formatToCLP } from "@/src/utils/price";
-import { capitalizeFirstLetter } from "@/src/utils/text";
 import Breadcrumb from "../ui/Breadcrumb";
 import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "@/src/store/useCartStore";
 import { toast } from "react-toastify";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createOrder } from "@/src/api/OrderAPI";
 
@@ -302,7 +301,7 @@ export default function ProductDetails({
 
                         {/* Product Name */}
                         <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-orange-100">
-                            {capitalizeFirstLetter(product.name)}
+                            {product.name}
                         </h1>
 
                         {/* Price */}

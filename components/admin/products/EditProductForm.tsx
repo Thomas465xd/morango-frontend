@@ -292,7 +292,8 @@ export default function EditProductForm({ productId } : EditProductFormProps) {
             ([_, value]) =>
                 value !== "" &&
                 value !== undefined &&
-                value !== null
+                value !== null &&
+                !Number.isNaN(value)
             )
         ) as Record<string, string | number>;
     }

@@ -32,7 +32,7 @@ export default function Header() {
 					<div className="flex items-center justify-center gap-2 mb-6 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">
 						<Sparkles size={18} className="text-orange-500" />
 						<span className="text-sm font-semibold text-white">
-							Joyería Premium
+							Joyería a tu medida
 						</span>
 					</div>
 
@@ -47,7 +47,7 @@ export default function Header() {
 					</h1>
 
 					<p className="mt-6 text-lg sm:text-xl text-orange-100 drop-shadow max-w-2xl leading-relaxed">
-						Diseños exclusivos y elegantes confeccionados con los materiales más finos. Cada pieza cuenta una historia de sofisticación y belleza.
+						Diseños exclusivos y llenos de personalidad, creados con piedras semipreciosas de la mejor calidad. Cada pieza refleja estilo y una historia única que realza tu look con sofisticación.
 					</p>
 
 					<Link

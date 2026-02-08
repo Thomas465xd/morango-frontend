@@ -106,7 +106,8 @@ export const categories = [
     "Plata",
     "Oro",
     "Diamante",
-    "Piedras Preciosas",
+    "Piedras Semipreciosas",
+    "Piedras Preciosas"
 ];
 
 // Questions.tsx
