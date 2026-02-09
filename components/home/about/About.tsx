@@ -58,7 +58,7 @@ export default function About() {
 									Pasión en cada joya
 								</h1>
 								<p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
-									Morango es el resultado de generaciones de amor por la joyería. Cada pieza es cuidadosamente diseñada y elaborada con los mejores materiales, combinando técnicas de orfebrería tradicional con diseños modernos que celebran la individualidad y elegancia de quienes las portan. Creemos que las joyas son más que accesorios: son historias, recuerdos y expresiones del alma.
+									Morango nace de nuestro amor por el color, las texturas y la creación. Cada pieza se diseña y elabora combinando técnicas cuidadosas con líneas contemporáneas que celebran la individualidad de quien la lleva. Nos hace felices ver a nuestros clientes encantados con el colorido y las combinaciones que proponemos; disfrutamos lo que hacemos y lo celebramos en cada pieza, jugando con tonos y texturas para aportar estilo y resaltar tu personalidad única.
 								</p>
 								<div className="mt-10 space-y-4">
 									<div className="flex items-center gap-3">

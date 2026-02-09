@@ -196,7 +196,10 @@ export function CheckoutPayment({
                 installments: Number(formData.installments) || 1,
                 issuer_id: formData.issuer_id,
                 payer: {
-                    identification: formData.payer.identification,
+                    identification: {
+                        type: formData.payer.identification.type,
+                        number: formData.payer.identification.number,
+                    },
                     email: formData.payer.email,
                 },
             };

@@ -60,10 +60,10 @@ export const createPaymentFormSchema = z.object({
     token: z.string(), 
     payment_method_id: z.string(), 
     installments: z.number().min(1), 
-    issuer_id: z.string(),
+    issuer_id: z.union([z.string(), z.number()]).transform(String),
     payer: z.object({
         identification: z.object({
-            number: z.number(), 
+            number: z.union([z.string(), z.number()]).transform(String), 
             type: z.string()
         }),
         email: z.email()
@@ -78,7 +78,7 @@ export const getPaymentStatusResponseSchema = z.object({
     paymentMethod: z.string().optional(), 
     amount: z.number().min(1),
     paymentId: z.string(), 
-    status: z.lazy(() => orderStatusSchema),
+    orderStatus: z.lazy(() => orderStatusSchema),
     retryToken: z.string()
 })
 
