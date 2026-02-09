@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useThemeForModal } from "@/src/hooks/useTheme";
 import Image from "next/image";
+import MercadoPagoLogo from "../../public/mp-horizontal.png"
 
 type CheckoutPaymentProps = {
     orderId: string; 
@@ -245,20 +246,20 @@ export function CheckoutPayment({
 				type="button"
 				onClick={handleWalletRedirect}
 				disabled={walletRedirecting}
-				className="w-full flex items-center justify-center gap-3 px-6 py-3.5 
+				className="flex-center w-full max-h-12 gap-3 px-6 py-3.5 
 					bg-[#009ee3] hover:bg-[#007eb5] active:bg-[#006a99]
 					disabled:opacity-60 disabled:cursor-not-allowed
 					text-white font-semibold text-base rounded-lg 
 					transition-colors duration-200 shadow-sm cursor-pointer"
 			>
+                {walletRedirecting ? "Redirigiendo..." : "Pagar con Mercado Pago"}
 				<Image
-					src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.6.111/mercadopago/logo__large@2x.png"
+					src={MercadoPagoLogo}
 					alt="Mercado Pago"
 					width={120}
 					height={30}
-					className="h-6 w-auto brightness-0 invert"
+					className=""
 				/>
-				{walletRedirecting ? "Redirigiendo..." : "Pagar con Mercado Pago"}
 			</button>
 
 			{/* Divider */}
