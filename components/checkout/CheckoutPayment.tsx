@@ -5,10 +5,11 @@ import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/pa
 import { useMutation } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useThemeForModal } from "@/src/hooks/useTheme";
+import Image from "next/image";
 
 type CheckoutPaymentProps = {
     orderId: string; 
@@ -27,20 +28,26 @@ export function CheckoutPayment({
 	const { theme } = useTheme();
     const router = useRouter();
     const themeForModal = useThemeForModal(); 
+    const [walletRedirecting, setWalletRedirecting] = useState(false);
 
     console.log("CheckoutPayment render");
 
+    // Only pass `amount` — do NOT include `preferenceId`.
+    // When preferenceId is present, the Brick can internally consume the card
+    // token during preference-based processing, causing "Card Token not found"
+    // (error 2006) when the backend tries to create the payment.
+    // The wallet/MercadoPago flow is handled via a separate redirect button.
     const initialization = useMemo(() => ({
-        preferenceId,
         amount,
-    }), [preferenceId, amount]);
+    }), [amount]);
 
 	const customization = useMemo<IPaymentBrickCustomization>(() => ({
 		paymentMethods: {
 			creditCard: ["all"],
 			prepaidCard: "all",
 			debitCard: "all",
-			mercadoPago: "all",
+			// mercadoPago removed — requires preferenceId which conflicts
+			// with card tokens. Wallet flow handled via separate button.
 			ticket: "all",
 			bankTransfer: "all",
 		},
@@ -137,27 +144,28 @@ export function CheckoutPayment({
         }
 	});
 
+    const handleWalletRedirect = () => {
+        setWalletRedirecting(true);
+        Swal.fire({
+            title: "Redirigiendo a Mercado Pago...",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            theme: themeForModal,
+            didOpen: () => Swal.showLoading(),
+        });
+        window.location.href = initPoint;
+    };
+
     // The Payment Brick passes data in this structure:
     // { formData: { token, payment_method_id, issuer_id, installments, ... } }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onSubmit = async ({ selectedPaymentMethod, formData } : { selectedPaymentMethod?: string; formData?: any; }) => {
-        //* Wallet flow → MP handles everything
+        //* Wallet flow → MP handles everything (safety net — wallet is now handled via separate button)
         console.log(selectedPaymentMethod, formData)
         if (selectedPaymentMethod === "wallet_purchase") {
-            Swal.fire({
-                title: "Redirigiendo a Mercado Pago...",
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => Swal.showLoading(),
-            });
-
-            // Esto es clave
-            window.location.href = initPoint;
-
-            //! VERY IMPORTANT:
-            // Resolve immediately so the Brick can redirect
-            return Promise.resolve(); 
+            handleWalletRedirect();
+            return Promise.resolve();
         }
 
         //* Others flow (credit card, debit card, etc...)
@@ -231,7 +239,38 @@ export function CheckoutPayment({
     // if ((window as any).MercadoPago) return;
 
 	return (
-		<div className="w-full">
+		<div className="w-full space-y-5">
+			{/* MercadoPago Wallet Button */}
+			<button
+				type="button"
+				onClick={handleWalletRedirect}
+				disabled={walletRedirecting}
+				className="w-full flex items-center justify-center gap-3 px-6 py-3.5 
+					bg-[#009ee3] hover:bg-[#007eb5] active:bg-[#006a99]
+					disabled:opacity-60 disabled:cursor-not-allowed
+					text-white font-semibold text-base rounded-lg 
+					transition-colors duration-200 shadow-sm cursor-pointer"
+			>
+				<Image
+					src="https://http2.mlstatic.com/frontend-assets/mp-web-navigation/ui-navigation/6.6.111/mercadopago/logo__large@2x.png"
+					alt="Mercado Pago"
+					width={120}
+					height={30}
+					className="h-6 w-auto brightness-0 invert"
+				/>
+				{walletRedirecting ? "Redirigiendo..." : "Pagar con Mercado Pago"}
+			</button>
+
+			{/* Divider */}
+			<div className="flex items-center gap-4">
+				<div className="flex-1 border-t border-zinc-300 dark:border-zinc-600" />
+				<span className="text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+					o pagar con tarjeta
+				</span>
+				<div className="flex-1 border-t border-zinc-300 dark:border-zinc-600" />
+			</div>
+
+			{/* Card Payment Brick */}
 			<Payment
 				initialization={initialization}
 				customization={customization}
