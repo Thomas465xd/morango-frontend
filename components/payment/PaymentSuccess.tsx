@@ -22,7 +22,7 @@ export default function PaymentSuccess({ orderId } : PaymentSuccessProps) {
     })
 
     const paymentStatus = data?.paymentStatus; 
-    const orderStatus = data?.status; 
+    const orderStatus = data?.orderStatus; 
     const trackingNumber = data?.trackingNumber; 
 
     useEffect(() => {

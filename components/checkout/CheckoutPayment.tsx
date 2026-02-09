@@ -209,7 +209,13 @@ export function CheckoutPayment({
             const result = await paymentMutation.mutateAsync(payload);
             Swal.close()
 
-            console.log("Payment successful:", result);
+            // Handle both 200 (backend created payment) and 202 (Brick already
+            // processed via preference — webhook will confirm).
+            if (result?.status === "processing") {
+                console.log("Payment processed by Brick via preference, redirecting to pending:", result);
+            } else {
+                console.log("Payment created by backend:", result);
+            }
 
             router.replace(`/checkout/pending/${orderId}`)
             

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 type RetryPaymentParams = {
 	params: Promise<{ orderId: string }>;
-	searchParams: { [key: string]: string | string[] | undefined };
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export default async function page({ params, searchParams }: RetryPaymentParams) {

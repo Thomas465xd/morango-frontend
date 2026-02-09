@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 type DiscountParams = {
     params: Promise<{ productId: string }>, 
-    searchParams: { [key: string]: string | string[] | undefined }
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function page({ params, searchParams } : DiscountParams) {

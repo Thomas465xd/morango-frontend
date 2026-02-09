@@ -18,7 +18,7 @@ export default function PaymentFailure({ orderId } : PaymentFailureProps) {
     })
 
     const paymentStatus = data?.paymentStatus || "Not Provided"; 
-    const orderStatus = data?.status; 
+    const orderStatus = data?.orderStatus; 
     const rejectionReason = data?.rejectionReason; 
     const trackingNumber = data?.trackingNumber; 
     const retryToken = data?.retryToken; 
