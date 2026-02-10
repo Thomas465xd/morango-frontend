@@ -1,11 +1,10 @@
 import { createPayment } from "@/src/api/PaymentAPI";
 import { CreatePaymentForm } from "@/src/types";
-import { Payment } from "@mercadopago/sdk-react";
-import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
+import { CardPayment } from "@mercadopago/sdk-react";
 import { useMutation } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useThemeForModal } from "@/src/hooks/useTheme";
@@ -30,6 +29,7 @@ export function CheckoutPayment({
     const router = useRouter();
     const themeForModal = useThemeForModal(); 
     const [walletRedirecting, setWalletRedirecting] = useState(false);
+    const processingRef = useRef(false);
 
     console.log("CheckoutPayment render");
 
@@ -42,16 +42,7 @@ export function CheckoutPayment({
         amount,
     }), [amount]);
 
-	const customization = useMemo<IPaymentBrickCustomization>(() => ({
-		paymentMethods: {
-			creditCard: ["all"],
-			prepaidCard: "all",
-			debitCard: "all",
-			// mercadoPago removed — requires preferenceId which conflicts
-			// with card tokens. Wallet flow handled via separate button.
-			ticket: "all",
-			bankTransfer: "all",
-		},
+	const customization = useMemo(() => ({
 		visual: {
 			style: {
 				theme: (theme === "dark" ? "dark" : "default") as
@@ -157,19 +148,18 @@ export function CheckoutPayment({
         window.location.href = initPoint;
     };
 
-    // The Payment Brick passes data in this structure:
-    // { formData: { token, payment_method_id, issuer_id, installments, ... } }
+    // CardPayment Brick passes formData directly:
+    // { token, payment_method_id, issuer_id, installments, payer, ... }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onSubmit = async ({ selectedPaymentMethod, formData } : { selectedPaymentMethod?: string; formData?: any; }) => {
-        //* Wallet flow → MP handles everything (safety net — wallet is now handled via separate button)
-        console.log(selectedPaymentMethod, formData)
-        if (selectedPaymentMethod === "wallet_purchase") {
-            handleWalletRedirect();
+    const onSubmit = async (formData: any) => {
+        // Prevent double submission — token is single-use
+        if (processingRef.current) {
+            console.warn("Payment already processing, ignoring duplicate submit");
             return Promise.resolve();
         }
+        processingRef.current = true;
 
-        //* Others flow (credit card, debit card, etc...)
         try {
             Swal.fire({
                 title: "Confirmando pago...",
@@ -182,7 +172,15 @@ export function CheckoutPayment({
                 },
             })
 
-            //console.log("Payment Brick onSubmit data:", data);
+            // Diagnostic logging — helps trace token issues in production
+            console.log("CardPayment onSubmit formData:", {
+                hasToken: !!formData.token,
+                tokenPreview: formData.token ? `${formData.token.slice(0, 8)}...${formData.token.slice(-4)}` : "MISSING",
+                payment_method_id: formData.payment_method_id,
+                issuer_id: formData.issuer_id,
+                installments: formData.installments,
+                hasEmail: !!formData.payer?.email,
+            });
 
             // Validate required fields before sending
             if (!formData.token) {
@@ -231,6 +229,7 @@ export function CheckoutPayment({
             return Promise.resolve();
         } catch (error) {
             Swal.close(); 
+            processingRef.current = false; // Allow retry on error
             toast.error(error instanceof Error ? error.message : "Error al procesar pago");
             return Promise.reject(error);
         }
@@ -271,16 +270,16 @@ export function CheckoutPayment({
 				<div className="flex-1 border-t border-zinc-300 dark:border-zinc-600" />
 			</div>
 
-			{/* Card Payment Brick */}
-			<Payment
+			{/* Card Payment Brick — uses CardPayment (no preferenceId concept) */}
+			<CardPayment
 				initialization={initialization}
 				customization={customization}
 				onSubmit={onSubmit}
 				onReady={() => {
-					console.log("Payment Brick ready");
+					console.log("CardPayment Brick ready");
 				}}
 				onError={(error) => {
-					console.error("MP Brick error:", error);
+					console.error("MP CardPayment Brick error:", error);
 				}}
 			/>
 		</div>
