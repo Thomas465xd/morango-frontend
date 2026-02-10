@@ -138,28 +138,30 @@ export default function ProductCard({ product } : ProductCardProps) {
                 )}
 
                 {/* Add to cart */}
-                <div className="
-                        group/cart 
-                        absolute z-10 bottom-2 right-0 w-[40px] h-[40px] 
-                        opacity-0 group-hover/card:opacity-100 transition-all duration-300
-                        flex-center
-                        bg-black
-                    "
-                >
-                    <button
-                        onClick={handleAdd}
-                        disabled={cartQuantity === product.availableStock}
-                        className='
-                            group-hover/cart:rotate-90 transition-all duration-300 
-                            disabled:opacity-50 disabled:group-hover/cart:rotate-0 disabled:cursor-not-allowed
-                        '
+                {!(product.availableStock === 0) && (
+                    <div className="
+                            group/cart 
+                            absolute z-10 bottom-2 right-0 w-[40px] h-[40px] 
+                            opacity-0 group-hover/card:opacity-100 transition-all duration-300
+                            flex-center
+                            bg-black
+                        "
                     >
-                        <Plus 
-                            size={20}
-                            color='white'
-                        />
-                    </button>
-                </div>
+                        <button
+                            onClick={handleAdd}
+                            disabled={cartQuantity === product.availableStock}
+                            className='
+                                group-hover/cart:rotate-90 transition-all duration-300 
+                                disabled:opacity-50 disabled:group-hover/cart:rotate-0 disabled:cursor-not-allowed
+                            '
+                        >
+                            <Plus 
+                                size={20}
+                                color='white'
+                            />
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* Product Info */}

@@ -8,6 +8,7 @@ import { formatToCLP } from "@/src/utils/price";
 import { useRouter } from "next/navigation";
 import { createOrder } from "@/src/api/OrderAPI";
 import { toast } from "react-toastify";
+import { useCartStore } from "@/src/store/useCartStore";
 
 type CartDetailsModalProps = {
     open: boolean; 
@@ -18,6 +19,8 @@ type CartDetailsModalProps = {
 export default function CartDetailsModal({ open, onToggle, items } : CartDetailsModalProps) { 
     const router = useRouter(); 
     const queryClient = useQueryClient(); 
+
+    const { clearCart } = useCartStore(); 
 
     const productIds = items.map(item => item.productId); 
 
@@ -67,6 +70,12 @@ export default function CartDetailsModal({ open, onToggle, items } : CartDetails
 
     const handleContinue = () => {
 		mutate({ items })
+    }
+
+    if (isError) {
+        clearCart(); 
+        window.location.reload(); 
+        return
     }
 
     return (

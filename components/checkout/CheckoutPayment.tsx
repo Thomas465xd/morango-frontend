@@ -1,15 +1,14 @@
 import { createPayment } from "@/src/api/PaymentAPI";
 import { CreatePaymentForm } from "@/src/types";
-import { CardPayment } from "@mercadopago/sdk-react";
+import { Payment } from "@mercadopago/sdk-react";
+import { IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
 import { useMutation } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { memo, useMemo, useRef, useState } from "react";
+import { memo, useMemo } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useThemeForModal } from "@/src/hooks/useTheme";
-import Image from "next/image";
-import MercadoPagoLogo from "../../public/mp-horizontal.png"
 
 type CheckoutPaymentProps = {
     orderId: string; 
@@ -28,21 +27,23 @@ export function CheckoutPayment({
 	const { theme } = useTheme();
     const router = useRouter();
     const themeForModal = useThemeForModal(); 
-    const [walletRedirecting, setWalletRedirecting] = useState(false);
-    const processingRef = useRef(false);
 
     console.log("CheckoutPayment render");
 
-    // Only pass `amount` — do NOT include `preferenceId`.
-    // When preferenceId is present, the Brick can internally consume the card
-    // token during preference-based processing, causing "Card Token not found"
-    // (error 2006) when the backend tries to create the payment.
-    // The wallet/MercadoPago flow is handled via a separate redirect button.
     const initialization = useMemo(() => ({
+        preferenceId,
         amount,
-    }), [amount]);
+    }), [preferenceId, amount]);
 
-	const customization = useMemo(() => ({
+	const customization = useMemo<IPaymentBrickCustomization>(() => ({
+		paymentMethods: {
+			creditCard: ["all"],
+			prepaidCard: "all",
+			debitCard: "all",
+			mercadoPago: "all",
+			ticket: "all",
+			bankTransfer: "all",
+		},
 		visual: {
 			style: {
 				theme: (theme === "dark" ? "dark" : "default") as
@@ -136,30 +137,30 @@ export function CheckoutPayment({
         }
 	});
 
-    const handleWalletRedirect = () => {
-        setWalletRedirecting(true);
-        Swal.fire({
-            title: "Redirigiendo a Mercado Pago...",
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            theme: themeForModal,
-            didOpen: () => Swal.showLoading(),
-        });
-        window.location.href = initPoint;
-    };
-
-    // CardPayment Brick passes formData directly:
-    // { token, payment_method_id, issuer_id, installments, payer, ... }
+    // The Payment Brick passes data in this structure:
+    // { formData: { token, payment_method_id, issuer_id, installments, ... } }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onSubmit = async (formData: any) => {
-        // Prevent double submission — token is single-use
-        if (processingRef.current) {
-            console.warn("Payment already processing, ignoring duplicate submit");
-            return Promise.resolve();
-        }
-        processingRef.current = true;
+    const onSubmit = async ({ selectedPaymentMethod, formData } : { selectedPaymentMethod?: string; formData?: any; }) => {
+        //* Wallet flow → MP handles everything
+        console.log(selectedPaymentMethod, formData)
+        if (selectedPaymentMethod === "wallet_purchase") {
+            Swal.fire({
+                title: "Redirigiendo a Mercado Pago...",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading(),
+            });
 
+            // Esto es clave
+            window.location.href = initPoint;
+
+            //! VERY IMPORTANT:
+            // Resolve immediately so the Brick can redirect
+            return Promise.resolve(); 
+        }
+
+        //* Others flow (credit card, debit card, etc...)
         try {
             Swal.fire({
                 title: "Confirmando pago...",
@@ -172,15 +173,7 @@ export function CheckoutPayment({
                 },
             })
 
-            // Diagnostic logging — helps trace token issues in production
-            console.log("CardPayment onSubmit formData:", {
-                hasToken: !!formData.token,
-                tokenPreview: formData.token ? `${formData.token.slice(0, 8)}...${formData.token.slice(-4)}` : "MISSING",
-                payment_method_id: formData.payment_method_id,
-                issuer_id: formData.issuer_id,
-                installments: formData.installments,
-                hasEmail: !!formData.payer?.email,
-            });
+            //console.log("Payment Brick onSubmit data:", data);
 
             // Validate required fields before sending
             if (!formData.token) {
@@ -229,7 +222,6 @@ export function CheckoutPayment({
             return Promise.resolve();
         } catch (error) {
             Swal.close(); 
-            processingRef.current = false; // Allow retry on error
             toast.error(error instanceof Error ? error.message : "Error al procesar pago");
             return Promise.reject(error);
         }
@@ -239,47 +231,16 @@ export function CheckoutPayment({
     // if ((window as any).MercadoPago) return;
 
 	return (
-		<div className="w-full space-y-5">
-			{/* MercadoPago Wallet Button */}
-			<button
-				type="button"
-				onClick={handleWalletRedirect}
-				disabled={walletRedirecting}
-				className="flex-center w-full max-h-12 gap-3 px-6 py-3.5 
-					bg-[#009ee3] hover:bg-[#007eb5] active:bg-[#006a99]
-					disabled:opacity-60 disabled:cursor-not-allowed
-					text-white font-semibold text-base rounded-lg 
-					transition-colors duration-200 shadow-sm cursor-pointer"
-			>
-                {walletRedirecting ? "Redirigiendo..." : "Pagar con Mercado Pago"}
-				<Image
-					src={MercadoPagoLogo}
-					alt="Mercado Pago"
-					width={120}
-					height={30}
-					className=""
-				/>
-			</button>
-
-			{/* Divider */}
-			<div className="flex items-center gap-4">
-				<div className="flex-1 border-t border-zinc-300 dark:border-zinc-600" />
-				<span className="text-sm text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
-					o pagar con tarjeta
-				</span>
-				<div className="flex-1 border-t border-zinc-300 dark:border-zinc-600" />
-			</div>
-
-			{/* Card Payment Brick — uses CardPayment (no preferenceId concept) */}
-			<CardPayment
+		<div className="w-full">
+			<Payment
 				initialization={initialization}
 				customization={customization}
 				onSubmit={onSubmit}
 				onReady={() => {
-					console.log("CardPayment Brick ready");
+					console.log("Payment Brick ready");
 				}}
 				onError={(error) => {
-					console.error("MP CardPayment Brick error:", error);
+					console.error("MP Brick error:", error);
 				}}
 			/>
 		</div>

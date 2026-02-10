@@ -9,10 +9,11 @@ import Link from "next/link";
 
 export default function CartView() {
     const items = useCartStore(state => state.items); 
+    const { clearCart } = useCartStore(); 
     const productIds = items.map(item => item.productId); 
 
     // Make query to retrieve cart products
-    const { data, isLoading } = useQuery({
+    const { data, isError, isLoading } = useQuery({
         queryKey: ["products", productIds],
         queryFn: () => getProductsByIds(productIds),
         retry: false, 
@@ -38,6 +39,12 @@ export default function CartView() {
     const freeShipping = freeShippingCostLeft <= 0 ? true : false
 
     if (isLoading) return <CartDetailsSkeleton />
+
+    if (isError) {
+        clearCart(); 
+        window.location.reload(); 
+        return
+    }
 
 	if (products.length === 0) {
 		return (
