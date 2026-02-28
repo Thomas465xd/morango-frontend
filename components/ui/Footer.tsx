@@ -21,25 +21,25 @@ export default function Footer({ auth = false } : FooterProps) {
                         <div className="flex justify-center lg:justify-start space-x-4">
                             <Link
                                 href="https://www.facebook.com/morangojoyas.cl"
-                                className="text-gray-300 dark:text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label="Facebook de JUP Propiedades"
+                                aria-label="Facebook de Morango Joyas"
                             >
                                 <Facebook size={18} />
                             </Link>
                             <Link
                                 href="https://www.instagram.com/morangojoyas.cl"
-                                className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label="Instagram de JUP Propiedades"
+                                aria-label="Instagram de Morango Joyas"
                             >
                                 <Instagram size={18} />
                             </Link>
                             <Link
                                 href="#"
-                                className="text-gray-300 dark:text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="LinkedIn de Morango Joyas"
@@ -48,7 +48,7 @@ export default function Footer({ auth = false } : FooterProps) {
                             </Link>
                             <Link
                                 href="mailto:javiera@morangojoyas.cl"
-                                className="text-gray-300 dark:text-gray-400 hover:text-green-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-green-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                 aria-label="Enviar correo a soporte"
                             >
                                 <Mail size={18} />
@@ -233,25 +233,25 @@ export default function Footer({ auth = false } : FooterProps) {
 							<div className="flex justify-center lg:justify-start space-x-4">
 								<Link
 									href="https://www.facebook.com/morangojoyas.cl"
-									className="text-gray-300 dark:text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+									className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									target="_blank"
 									rel="noopener noreferrer"
-									aria-label="Facebook de JUP Propiedades"
+									aria-label="Facebook de Morango Joyas"
 								>
 									<Facebook size={18} />
 								</Link>
 								<Link
 									href="https://www.instagram.com/morangojoyas.cl"
-									className="text-gray-300 dark:text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+									className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									target="_blank"
 									rel="noopener noreferrer"
-									aria-label="Instagram de JUP Propiedades"
+									aria-label="Instagram de Morango Joyas"
 								>
 									<Instagram size={18} />
 								</Link>
 								<Link
 									href="#"
-									className="text-gray-300 dark:text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
+									className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="LinkedIn de Morango Joyas"
@@ -260,7 +260,7 @@ export default function Footer({ auth = false } : FooterProps) {
 								</Link>
 								<Link
 									href="mailto:javiera@morangojoyas.cl"
-									className="text-gray-300 dark:text-gray-400 hover:text-green-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+									className="inline-flex items-center justify-center text-gray-300 dark:text-gray-400 hover:text-green-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
 									aria-label="Enviar correo a soporte"
 								>
 									<Mail size={18} />

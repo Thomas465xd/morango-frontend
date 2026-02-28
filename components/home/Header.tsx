@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles, CheckCircle, HelpCircle, Mail } from "lucide-react";
@@ -16,8 +14,9 @@ export default function Header() {
 						alt="Hero background"
 						src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1920&h=1080&fit=crop"
 						fill
-						sizes="100vh"
-						fetchPriority="high"
+						sizes="100vw"
+						priority
+						className="object-cover"
 					/>
 				</div>
 
@@ -111,7 +110,8 @@ export default function Header() {
 										alt={category.name}
 										src={category.imageSrc}
 										fill
-									    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
+										sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
+										className="object-cover"
                                     />
 
 									{/* Content */}
@@ -157,7 +157,8 @@ export default function Header() {
 										<Image
 											alt={collection.imageAlt}
 											src={collection.imageSrc}
-											fill										sizes="(min-width: 1024px) 33vw, 100vw"											className="object-cover group-hover:scale-110 transition-transform duration-500"
+											fill										
+                                            sizes="(min-width: 1024px) 33vw, 100vw"											className="object-cover group-hover:scale-110 transition-transform duration-500"
 										/>
 										<div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
 									</div>
@@ -192,7 +193,12 @@ export default function Header() {
 						</p>
 						<Link
 							href="/home/products"
-							className="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-orange-300 hover:bg-orange-400 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
+                            className="
+                                group mx-auto px-12
+                                button w-fit h-[56px] flex-center 
+                                tracking-widest border-orange-200/40 dark:hover:border-orange-200/50 
+                                text-orange-200 hover:text-orange-300 uppercase
+                            "
 						>
 							Explorar Ahora
 							<ArrowRight size={20} />

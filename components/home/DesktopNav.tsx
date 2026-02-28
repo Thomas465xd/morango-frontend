@@ -105,7 +105,7 @@ export default function DesktopNav({ open, onToggleMobileMenu, onToggleIsSeconda
                                 <div className="flex justify-center lg:justify-start space-x-4">
                                     <Link
                                         href="https://www.facebook.com/jup.propiedades"
-                                        className="text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                        className="inline-flex items-center justify-center text-gray-400 hover:text-blue-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label="Facebook de JUP Propiedades"
@@ -114,7 +114,7 @@ export default function DesktopNav({ open, onToggleMobileMenu, onToggleIsSeconda
                                     </Link>
                                     <Link
                                         href="https://www.instagram.com/jup.cl"
-                                        className="text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                        className="inline-flex items-center justify-center text-gray-400 hover:text-pink-400 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label="Instagram de JUP Propiedades"
@@ -123,7 +123,7 @@ export default function DesktopNav({ open, onToggleMobileMenu, onToggleIsSeconda
                                     </Link>
                                     <Link
                                         href="#"
-                                        className="text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
+                                        className="inline-flex items-center justify-center text-gray-400 hover:text-blue-500 transition duration-200 p-2 rounded-full hover:bg-white/10"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label="LinkedIn de JUP Propiedades"
@@ -132,7 +132,7 @@ export default function DesktopNav({ open, onToggleMobileMenu, onToggleIsSeconda
                                     </Link>
                                     <Link
                                         href="mailto:contacto@jup.cl"
-                                        className="text-gray-400 hover:text-green-400 transition-all duration-200 p-2 rounded-full hover:bg-white/10"
+                                        className="inline-flex items-center justify-center text-gray-400 hover:text-green-400 transition-all duration-200 p-2 rounded-full hover:bg-white/10"
                                         aria-label="Enviar correo a soporte"
                                     >
                                         <Mail size={18} />

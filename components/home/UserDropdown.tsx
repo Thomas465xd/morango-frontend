@@ -113,7 +113,7 @@ export default function UserDropdown({ user } : UserDropdownProps) {
                 role="menu"
                 aria-orientation="vertical"
             >
-                <div className="px-4 py-3">
+                <div className="px-4 py-3" role="presentation">
                     <p className="text-sm text-gray-400">
                         Sesión iniciada como
                     </p>

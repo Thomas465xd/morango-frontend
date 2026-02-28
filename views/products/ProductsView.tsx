@@ -395,6 +395,7 @@ export default function ProductsView() {
                     <button
                         onClick={() => setShowFiltersModal(false)}
                         className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+                        aria-label="Cerrar filtros"
                     >
                         <X size={20} className="text-zinc-600 dark:text-zinc-400" />
                     </button>

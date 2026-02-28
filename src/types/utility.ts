@@ -1,4 +1,6 @@
 import z from "zod";
+import NecklaceImage from "@/public/necklace-category.jpeg"; // static import
+import BraceletImage from "@/public/bracelet-category.jpeg"
 
 export const searchSchema = z.object({
 	search: z
@@ -200,12 +202,12 @@ export const headerCategories = [
     {
         name: "Collares",
         href: "/home/products?productType=Collar",
-        imageSrc: "https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=500&h=500&fit=crop",
+        imageSrc: NecklaceImage,
     },
     {
         name: "Pulseras",
         href: "/home/products?productType=Pulsera",
-        imageSrc: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&h=500&fit=crop",
+        imageSrc: BraceletImage,
     },
     {
         name: "Aros",

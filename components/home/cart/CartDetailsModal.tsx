@@ -107,6 +107,7 @@ export default function CartDetailsModal({ open, onToggle, items } : CartDetails
                     <button
                         onClick={onToggle}
                         className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+                        aria-label="Cerrar cesta"
                     >
                         <X size={20} className="text-zinc-600 dark:text-zinc-400" />
                     </button>

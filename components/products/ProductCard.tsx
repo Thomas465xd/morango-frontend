@@ -150,6 +150,7 @@ export default function ProductCard({ product } : ProductCardProps) {
                         <button
                             onClick={handleAdd}
                             disabled={cartQuantity === product.availableStock}
+                            aria-label="Agregar al carrito"
                             className='
                                 group-hover/cart:rotate-90 transition-all duration-300 
                                 disabled:opacity-50 disabled:group-hover/cart:rotate-0 disabled:cursor-not-allowed

@@ -74,7 +74,7 @@ export default function CategoriesDropdown({ categories } : CategoriesDropdownPr
                 aria-orientation="vertical"
             >
                 {/* Header */}
-                <div className="px-4 py-3 border-b border-zinc-700/50">
+                <div className="px-4 py-3 border-b border-zinc-700/50" role="presentation">
                     <div className="flex items-center gap-2">
                         <Grid3x3 size={16} className="text-orange-300" />
                         <p className="text-sm font-semibold text-white">
@@ -127,7 +127,7 @@ export default function CategoriesDropdown({ categories } : CategoriesDropdownPr
 
                 {/* View All Categories Button */}
                 {hasMore && (
-                    <div className="border-t border-zinc-700/50 px-4 py-2">
+                    <div className="border-t border-zinc-700/50 px-4 py-2" role="none">
                         <Link
                             href="/home/products"
                             onClick={() => setIsOpen(false)}
@@ -149,12 +149,12 @@ export default function CategoriesDropdown({ categories } : CategoriesDropdownPr
 
                 {/* Featured Section - Show popular collections */}
                 {categories.length > 0 && (
-                    <div className="border-t border-zinc-700/50 px-4 py-3 bg-zinc-800/50">
-                        <p className="text-xs font-semibold text-zinc-400 mb-2 flex items-center gap-1">
+                    <div className="border-t border-zinc-700/50 px-4 py-3 bg-zinc-800/50" role="none">
+                        <p className="text-xs font-semibold text-zinc-400 mb-2 flex items-center gap-1" role="presentation">
                             <Sparkles size={12} />
                             COLECCIONES DESTACADAS
                         </p>
-                        <div className="space-y-1">
+                        <div className="space-y-1" role="presentation">
                             {displayedCategories.slice(0, 2).map((categoryItem) => (
                                 <Link
                                     key={`featured-${categoryItem.category}`}
@@ -167,6 +167,7 @@ export default function CategoriesDropdown({ categories } : CategoriesDropdownPr
                                         transition-colors duration-150
                                         truncate
                                     "
+                                    role="menuitem"
                                 >
                                     ★ {categoryItem.category}
                                 </Link>

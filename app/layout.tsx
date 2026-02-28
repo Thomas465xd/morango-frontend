@@ -54,11 +54,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning className={nunito.variable}>
+		<html lang="es" suppressHydrationWarning className={nunito.variable}>
             <head>
                 {/* DNS Prefetch & Preconnect */}
                 <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
                 <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+                <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="" />
+                <link rel="dns-prefetch" href="https://images.unsplash.com" />
 				<link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
