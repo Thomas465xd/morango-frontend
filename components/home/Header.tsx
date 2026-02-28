@@ -50,7 +50,7 @@ export default function Header() {
 					</p>
 
 					<Link
-						href="/home/products?sale=true"
+						href="/home/products"
 						className="
                             mt-10 flex-align 
                             button 
